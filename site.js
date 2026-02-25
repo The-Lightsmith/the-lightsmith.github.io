@@ -201,34 +201,32 @@
       initNav(nav);
     });
 
-    // === Contact Form Handler ===
+    // === Contact Form Handler (Web3Forms) ===
     const contactForm = document.getElementById("contactForm");
     if (contactForm) {
       contactForm.addEventListener("submit", async function(e) {
         e.preventDefault();
 
-        const formData = new FormData(contactForm);
-        formData.append("_secret", "bjk5342b25kjg2kj65gjk324h8");
-
-        const url = "https://script.google.com/macros/s/AKfycbzVgF7oQcxWH5bc92wHcXV-x4ysaDpHJOkXaDv9PenNOHCcnTTFcWxLvr6l_d5PsMJZmw/exec";
         const statusEl = document.getElementById("contactFormStatus");
         if (statusEl) {
           statusEl.classList.remove("is-hidden");
           statusEl.style.color = "#555";
-          statusEl.textContent = "Sending...";
+          statusEl.textContent = "Sending…";
         }
 
-        try {
-          const res = await fetch(url, { method: "POST", body: formData });
-          const text = await res.text();
-          let data;
-          try {
-            data = JSON.parse(text);
-          } catch {
-            throw new Error("Unexpected server response: " + text.slice(0, 100));
-          }
+        const formData = new FormData(contactForm);
+        formData.append("access_key", "87b146f7-8582-4af4-bd4b-0bb3a25283ac");
+        formData.append("from_name", formData.get("name") || "Website Visitor");
+        formData.append("subject", "New message from " + (formData.get("name") || "contact form"));
 
-          if (data.status === "success") {
+        try {
+          const res = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+          });
+          const data = await res.json();
+
+          if (data.success) {
             window.location.href = "/thank-you.html";
           } else {
             if (statusEl) {
@@ -238,7 +236,7 @@
           }
         } catch (err) {
           if (statusEl) {
-            statusEl.textContent = "Submission failed: " + err.message;
+            statusEl.textContent = "Submission failed. Please try again or call us at 208-614-3414.";
             statusEl.style.color = "red";
           }
         }
