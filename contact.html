@@ -92,10 +92,13 @@
   </div>
 
   <div class="form-row">
-    <label for="file">Attach photos or PDFs (Under Maintenance) <span class="muted">(optional)</span></label>
+    <label for="file">Attach photos or PDFs <span class="muted">(optional)</span></label>
     <input id="file" name="attachments[]" type="file" accept="image/*,application/pdf" multiple>
-    <p class="small-hint">Hold Ctrl (Windows) or Command (&#8984;) on Mac while clicking to select more than one file.</p>
+    <p class="small-hint">Hold Ctrl (Windows) or Command (&#8984;) on Mac while clicking to select more than one file. Max 5 MB per file.</p>
   </div>
+
+  <!-- Honeypot spam trap — must stay hidden -->
+  <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true">
 
   <p class="form-status is-hidden" id="contactFormStatus" role="status" aria-live="polite"></p>
 
@@ -104,41 +107,6 @@
     <span>Send Message</span>
   </button>
 </form>
-
-<script>
-document.getElementById("contactForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  
-  const form = this;
-  const formData = new FormData(form);
-
-  // Add secret for server-side auth
-  formData.append("_secret", "bjk5342b25kjg2kj65gjk324h8");
-
-  // Your Apps Script Web App URL
-  const url = "https://script.google.com/macros/s/AKfycbxzvYFKZlYLWcwEp9GiNHiLn8lS2aYuuTAbmGC03JulRS8k_G57N77jwwPJcS05p2If/exec";
-
-  const statusEl = document.getElementById("contactFormStatus");
-  statusEl.classList.remove("is-hidden");
-  statusEl.style.color = "#555";
-  statusEl.textContent = "Sending...";
-
-  try {
-    const res = await fetch(url, { method: "POST", body: formData });
-    const data = await res.json();
-
-    if (data.status === "success") {
-      window.location.href = "/thank-you.html";
-    } else {
-      statusEl.textContent = "Error: " + (data.message || "Unknown error");
-      statusEl.style.color = "red";
-    }
-  } catch (err) {
-    statusEl.textContent = "Submission failed: " + err.message;
-    statusEl.style.color = "red";
-  }
-});
-</script>
 
     </section>
     
