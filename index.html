@@ -47,6 +47,7 @@
     width: 100%;
     height: 100%;
     background: url('bigfoot-mustang-web-header.jpg') no-repeat;
+    background: image-set(url('bigfoot-mustang-web-header.webp') type('image/webp'), url('bigfoot-mustang-web-header.jpg') type('image/jpeg')) no-repeat;
     background-size: cover;
     background-position: 50% var(--hero-top);
     transition: background-position 0.3s ease;
@@ -300,29 +301,29 @@
       <div class="gallery-slider-pairs">
         <div class="slider-pair">
           <button class="arrow left" type="button" aria-label="Previous Mustang photo">&#10094;</button>
-          <img src="mustang-before.jpg" alt="Mustang headlights before restoration" class="active" loading="lazy" decoding="async">
-          <img src="mustang-after.jpg" alt="Mustang headlights after restoration" loading="lazy" decoding="async">
+          <picture><source srcset="mustang-before.webp" type="image/webp"><img src="mustang-before.jpg" alt="Mustang headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="mustang-after.webp" type="image/webp"><img src="mustang-after.jpg" alt="Mustang headlights after restoration" loading="lazy" decoding="async"></picture>
           <button class="arrow right" type="button" aria-label="Next Mustang photo">&#10095;</button>
         </div>
 
         <div class="slider-pair">
           <button class="arrow left" type="button" aria-label="Previous truck photo">&#10094;</button>
-          <img src="truck-before.jpg" alt="Truck headlights before restoration" class="active" loading="lazy" decoding="async">
-          <img src="truck-after.jpg" alt="Truck headlights after restoration" loading="lazy" decoding="async">
+          <picture><source srcset="truck-before.webp" type="image/webp"><img src="truck-before.jpg" alt="Truck headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="truck-after.webp" type="image/webp"><img src="truck-after.jpg" alt="Truck headlights after restoration" loading="lazy" decoding="async"></picture>
           <button class="arrow right" type="button" aria-label="Next truck photo">&#10095;</button>
         </div>
 
         <div class="slider-pair">
           <button class="arrow left" type="button" aria-label="Previous sedan photo">&#10094;</button>
-          <img src="car1-before.jpg" alt="Sedan headlights before restoration" class="active" loading="lazy" decoding="async">
-          <img src="car1-after.jpg" alt="Sedan headlights after restoration" loading="lazy" decoding="async">
+          <picture><source srcset="car1-before.webp" type="image/webp"><img src="car1-before.jpg" alt="Sedan headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="car1-after.webp" type="image/webp"><img src="car1-after.jpg" alt="Sedan headlights after restoration" loading="lazy" decoding="async"></picture>
           <button class="arrow right" type="button" aria-label="Next sedan photo">&#10095;</button>
         </div>
 
         <div class="slider-pair">
           <button class="arrow left" type="button" aria-label="Previous SUV photo">&#10094;</button>
-          <img src="car2-before.jpg" alt="SUV headlights before restoration" class="active" loading="lazy" decoding="async">
-          <img src="car2-after.jpg" alt="SUV headlights after restoration" loading="lazy" decoding="async">
+          <picture><source srcset="car2-before.webp" type="image/webp"><img src="car2-before.jpg" alt="SUV headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
+          <picture><source srcset="car2-after.webp" type="image/webp"><img src="car2-after.jpg" alt="SUV headlights after restoration" loading="lazy" decoding="async"></picture>
           <button class="arrow right" type="button" aria-label="Next SUV photo">&#10095;</button>
         </div>
       </div>
