@@ -119,7 +119,7 @@
   }
   </script>
   <script type="application/ld+json">
-  /*{
+  {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
@@ -389,10 +389,16 @@
       </ul>
       <p class="service-area-note">Need headlight restoration outside these cities? <a href="contact.html">Send a quick note</a> and we&#8217;ll see if we can help.</p>
       <div class="service-area-map">
-        <div class="service-area-map__inner">
-          <h3>We come to you</h3>
-          <p>Typical travel radius: 35 miles from Caldwell. Reach out for longer trips &mdash; we&#8217;ll make it work.</p>
-        </div>
+        <iframe
+          src="https://maps.google.com/maps?ll=43.62,-116.48&z=10&t=m&output=embed"
+          width="100%"
+          height="380"
+          style="border:0; display:block;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="The Lightsmith service area — Treasure Valley, Idaho"
+        ></iframe>
       </div>
     </section>
   <div class="section-divider" aria-hidden="true"></div>
@@ -482,7 +488,7 @@
           return;
         }
         try {
-          const fieldMask = ['reviews.authorAttribution','reviews.rating','reviews.text','reviews.publishTime','reviews.createTime'].join(',');
+          const fieldMask = ['reviews.authorAttribution','reviews.rating','reviews.text','reviews.publishTime'].join(',');
           const endpoint = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(placeId);
           const response = await fetch(endpoint, {
             headers: {
@@ -532,10 +538,35 @@
       });
     });
   </script>
-  <div class="mobile-cta-bar">
-    <a class="mobile-cta-bar__link mobile-cta-bar__book" href="book.html">Book Now</a>
-    <a class="mobile-cta-bar__link mobile-cta-bar__call" href="tel:2086143414">Call 208-614-3414</a>
-  </div>
+<script>
+(function(){
+  const keyMeta = document.querySelector('meta[name="google-places-api-key"]');
+  const placeMeta = document.querySelector('meta[name="google-places-place-id"]');
+  const key = keyMeta ? keyMeta.content.trim() : '';
+  const place = placeMeta ? placeMeta.content.trim() : '';
+  if (!key || !place) return;
+
+  fetch('https://places.googleapis.com/v1/places/' + encodeURIComponent(place), {
+    headers: {
+      'X-Goog-Api-Key': key,
+      'X-Goog-FieldMask': 'rating,userRatingCount'
+    }
+  })
+  .then(function(res){ return res.json(); })
+  .then(function(data){
+    if (data.rating) {
+      const rating = data.rating.toFixed(1);
+      const count = data.userRatingCount || 0;
+      const stars = Math.round(data.rating);
+      document.getElementById('heroRatingValue').textContent = rating;
+      document.getElementById('heroRatingCount').textContent = count;
+      document.getElementById('heroRatingStars').textContent = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+      document.getElementById('heroRatingStars').setAttribute('aria-label', rating + ' out of 5 stars');
+    }
+  })
+  .catch(function(err){ console.warn('Rating fetch failed:', err); });
+})();
+</script>
   <script defer src="nav.js"></script>
   <script>
     (function(){
