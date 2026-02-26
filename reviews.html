@@ -205,12 +205,13 @@
       lastTimestamp = timestamp;
 
       // Decay user-added velocity
-      userVelocity *= Math.pow(0.90, dt / 16.67);
+      userVelocity *= Math.pow(0.88, dt / 16.67);
+if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
 
-      offset += (SPEED + Math.max(0, userVelocity)) * dt;
+      offset += (SPEED + userVelocity) * dt;
       if (halfWidth > 0) {
-        offset = ((offset % halfWidth) + halfWidth) % halfWidth;
-      }
+  offset = ((offset % halfWidth) + halfWidth) % halfWidth;
+}
       track.style.transform = 'translateX(' + (-offset) + 'px)';
       raf = requestAnimationFrame(step);
     }
@@ -232,7 +233,7 @@
     viewport.addEventListener('wheel', function(e) {
       e.preventDefault();
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.5;
-      userVelocity += delta * 0.08;
+userVelocity += delta * 0.06;
     }, { passive: false });
 
     // Touch swipe
@@ -243,7 +244,7 @@
     viewport.addEventListener('touchmove', function(e) {
       if (lastTouchX === null) return;
       const dx = lastTouchX - e.touches[0].clientX;
-      userVelocity += dx * 0.05;
+      userVelocity += dx * 0.04;
       lastTouchX = e.touches[0].clientX;
     }, { passive: true });
     viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
