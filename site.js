@@ -1,4 +1,18 @@
 (function () {
+  // Button shimmer — drives --btn-shimmer-pos on :root so every .btn stays in sync
+  // regardless of when it was inserted into the DOM.
+  (function () {
+    var PERIOD = 5000; // ms for one full oscillation
+    function step(timestamp) {
+      var t = (timestamp % PERIOD) / PERIOD;
+      // Sine wave: slow at edges (0%, 100%), fast through the middle
+      var pos = ((1 - Math.cos(2 * Math.PI * t)) / 2 * 100).toFixed(2);
+      document.documentElement.style.setProperty('--btn-shimmer-pos', pos + '% 0%');
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+
   function initNav(nav) {
     const navLinksWrap = nav.querySelector('.nav__links');
     const toggleBtn = nav.querySelector('.nav__toggle');

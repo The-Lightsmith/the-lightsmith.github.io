@@ -29,6 +29,23 @@
   <meta name="google-places-place-id" content="ChIJw79roKw_kyURYlQvmTrI14o">
   
   <script src="site.js" defer></script>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1990647455208218');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1990647455208218&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <!-- Structured Data for SEO -->
   <script type="application/ld+json">
     
@@ -62,7 +79,19 @@
     ]
   }
   </script>
-  
+  <style>
+  #reviewsCarousel { overflow: hidden; }
+  .carousel-viewport {
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100px, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 100px, black calc(100% - 100px), transparent 100%);
+  }
+  .carousel-viewport:active { cursor: grabbing; }
+  #reviewsList { display: flex; gap: 1.5rem; width: max-content; will-change: transform; padding: 0.5rem 0; }
+  .review-card { flex: 0 0 300px; }
+  </style>
 
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -84,30 +113,10 @@
         <p class="section__lead">See what neighbors across the Treasure Valley say after restoring their headlights with The Lightsmith.</p>
       </div>
 
-      <div class="reviews-controls" role="group" aria-label="Filter reviews">
-        <label for="ratingFilter">Minimum rating
-          <select id="ratingFilter">
-          <option value="0">All ratings</option>
-          <option value="5">5 stars only</option>
-          <option value="4">4 stars and up</option>
-          <option value="3">3 stars and up</option>
-          </select>
-        </label>
-        <label class="reviews-search" for="searchFilter">Search reviews
-          <input type="search" id="searchFilter" placeholder="Search for terms like fast or professional">
-        </label>
-      </div>
-
-      <div class="reviews-carousel" id="reviewsCarousel" tabindex="0">
-        <button class="carousel-arrow prev" type="button" aria-label="Show previous reviews" data-direction="prev">
-          <span aria-hidden="true">&#10094;</span>
-        </button>
+      <div class="reviews-carousel" id="reviewsCarousel">
         <div class="carousel-viewport">
-          <div id="reviewsList" class="carousel-track" aria-live="polite"></div>
+          <div id="reviewsList" class="carousel-track"></div>
         </div>
-        <button class="carousel-arrow next" type="button" aria-label="Show next reviews" data-direction="next">
-          <span aria-hidden="true">&#10095;</span>
-        </button>
       </div>
 
       <p class="reviews-more">
@@ -122,14 +131,10 @@
 
   <script>
   (function(){
-    const ratingSelect = document.getElementById('ratingFilter');
-    const searchInput = document.getElementById('searchFilter');
-    const carousel = document.getElementById('reviewsCarousel');
+    const viewport = document.querySelector('.carousel-viewport');
     const track = document.getElementById('reviewsList');
-    if (!ratingSelect || !searchInput || !carousel || !track) return;
+    if (!viewport || !track) return;
 
-    const prevBtn = carousel.querySelector('.carousel-arrow.prev');
-    const nextBtn = carousel.querySelector('.carousel-arrow.next');
     const STAR_FULL = '&#9733;';
     const STAR_EMPTY = '&#9734;';
     const FALLBACK_REVIEWS = [
@@ -153,11 +158,6 @@
       }
     ];
 
-    let allReviews = [];
-    let filtered = [];
-    let currentIndex = 0;
-    let autoTimer = null;
-
     function escapeHTML(str) {
       return String(str || '').replace(/[&<>"']/g, function(match){
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[match];
@@ -177,8 +177,8 @@
       const dateSource = review.createTime || review.publishTime || '';
       const date = dateSource ? new Date(dateSource).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
       const rating = review.rating || 0;
-       return [
-        '<article class="review-card review-slide">',
+      return [
+        '<article class="review-card">',
         '  <header class="review-head">',
         profilePhoto ? '    <img class="review-avatar" src="' + profilePhoto + '" alt="" loading="lazy">' : '',
         '    <div>',
@@ -187,76 +187,66 @@
         '    </div>',
         '  </header>',
         '  <p class="review-text">' + text + '</p>',
-        '  <div class="review-actions" aria-hidden="false">',
-        '    <button class="card-arrow card-arrow--prev" type="button" aria-label="Show previous review">&#10094;</button>',
-        '    <button class="card-arrow card-arrow--next" type="button" aria-label="Show next review">&#10095;</button>',
-        '  </div>',
         '</article>'
       ].join('\n');
     }
 
-    function applyFilters() {
-      const minRating = Number(ratingSelect.value || 0);
-      const term = searchInput.value.trim().toLowerCase();
-      filtered = allReviews.filter(function(review){
-        const rating = Number(review.rating || 0);
-        const text = ((review.text && (review.text.text || review.text)) || '') + ' ' + (review.authorAttribution && review.authorAttribution.displayName || '');
-        return rating >= minRating && (!term || text.toLowerCase().indexOf(term) !== -1);
-      });
-      currentIndex = 0;
+    // Marquee state
+    const SPEED = 0.04;    // px per ms base scroll speed
+    let offset = 0;
+    let userVelocity = 0;  // extra px per ms from user input, decays over time
+    let halfWidth = 0;
+    let lastTimestamp = null;
+    let raf = null;
+
+    function step(timestamp) {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
+      const dt = Math.min(timestamp - lastTimestamp, 50);
+      lastTimestamp = timestamp;
+
+      // Decay user-added velocity
+      userVelocity *= Math.pow(0.90, dt / 16.67);
+
+      offset += (SPEED + Math.max(0, userVelocity)) * dt;
+      if (halfWidth > 0) {
+        offset = ((offset % halfWidth) + halfWidth) % halfWidth;
+      }
+      track.style.transform = 'translateX(' + (-offset) + 'px)';
+      raf = requestAnimationFrame(step);
     }
 
-    function renderCarousel() {
-      const count = filtered.length;
-      if (!count) {
-        track.innerHTML = '<p class="muted">No reviews match your filters yet.</p>';
-        return;
-      }
-      const indices = [];
-      if (count >= 3) {
-        indices.push((currentIndex - 1 + count) % count, currentIndex % count, (currentIndex + 1) % count);
-      } else if (count === 2) {
-        indices.push(currentIndex % 2, (currentIndex + 1) % 2);
-      } else {
-        indices.push(0);
-      }
-       const html = indices.map(function(idx, position){
-        const slideHTML = renderCard(filtered[idx]);
-        const cls = count >= 3 ? (position === 1 ? 'is-center' : (position === 0 ? 'is-side is-left' : 'is-side is-right')) : (position === 0 ? 'is-center' : 'is-side');
-        return slideHTML.replace('review-slide', 'review-slide ' + cls);
-      }).join('');
-      track.innerHTML = html;
-      // Hook up internal mobile buttons after render
-      track.querySelectorAll('.card-arrow--prev').forEach(function(btn){
-        btn.addEventListener('click', function(){ prev(); startAuto(); });
-      });
-      track.querySelectorAll('.card-arrow--next').forEach(function(btn){
-        btn.addEventListener('click', function(){ next(); startAuto(); });
+    function startMarquee(reviews) {
+      // Duplicate the list for a seamless loop
+      const doubled = reviews.concat(reviews);
+      track.innerHTML = doubled.map(renderCard).join('');
+      // Measure after paint so layout is complete
+      requestAnimationFrame(function(){
+        halfWidth = track.scrollWidth / 2;
+        lastTimestamp = null;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(step);
       });
     }
-    function next() {
-      if (!filtered.length) return;
-      currentIndex = (currentIndex + 1) % filtered.length;
-      renderCarousel();
-    }
 
-    function prev() {
-      if (!filtered.length) return;
-      currentIndex = (currentIndex - 1 + filtered.length) % filtered.length;
-      renderCarousel();
-    }
+    // Wheel: horizontal or vertical scroll boosts velocity
+    viewport.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.5;
+      userVelocity += delta * 0.08;
+    }, { passive: false });
 
-    function startAuto() {
-      stopAuto();
-      autoTimer = setInterval(next, 6000);
-    }
-
-    function stopAuto() {
-      if (autoTimer) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-      }
-    }
+    // Touch swipe
+    let lastTouchX = null;
+    viewport.addEventListener('touchstart', function(e) {
+      lastTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    viewport.addEventListener('touchmove', function(e) {
+      if (lastTouchX === null) return;
+      const dx = lastTouchX - e.touches[0].clientX;
+      userVelocity += dx * 0.05;
+      lastTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
 
     async function fetchReviews() {
       const keyMeta = document.querySelector('meta[name="google-places-api-key"]');
@@ -275,41 +265,22 @@
           'X-Goog-FieldMask': fieldMask
         }
       });
-      if (!res.ok) {
-        throw new Error('Places API error ' + res.status);
-      }
+      if (!res.ok) throw new Error('Places API error ' + res.status);
       const data = await res.json();
       const reviews = Array.isArray(data.reviews) ? data.reviews : [];
-      reviews.forEach(function(review){
-        if (!review.createTime && review.publishTime) {
-          review.createTime = review.publishTime;
-        }
-      });
+      reviews.forEach(function(r){ if (!r.createTime && r.publishTime) r.createTime = r.publishTime; });
       return reviews.length ? reviews : FALLBACK_REVIEWS;
     }
 
     (async function init(){
+      let reviews;
       try {
-        allReviews = await fetchReviews();
+        reviews = await fetchReviews();
       } catch (error) {
         console.warn('Falling back to sample reviews:', error.message || error);
-        allReviews = FALLBACK_REVIEWS;
+        reviews = FALLBACK_REVIEWS;
       }
-      applyFilters();
-      renderCarousel();
-      startAuto();
-
-      ratingSelect.addEventListener('change', function(){ applyFilters(); renderCarousel(); startAuto(); });
-      searchInput.addEventListener('input', function(){ applyFilters(); renderCarousel(); });
-      prevBtn.addEventListener('click', function(){ prev(); startAuto(); });
-      nextBtn.addEventListener('click', function(){ next(); startAuto(); });
-      carousel.addEventListener('mouseenter', stopAuto);
-      carousel.addEventListener('mouseleave', startAuto);
-
-      carousel.addEventListener('keydown', function(event){
-        if (event.key === 'ArrowLeft') { event.preventDefault(); prev(); startAuto(); }
-        if (event.key === 'ArrowRight') { event.preventDefault(); next(); startAuto(); }
-      });
+      startMarquee(reviews);
     })();
   })();
   </script>
