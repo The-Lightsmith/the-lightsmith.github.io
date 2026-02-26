@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add reviews.html)",
+      "Bash(git commit:*)",
+      "Bash(git add index.html)"
+    ]
+  }
+}

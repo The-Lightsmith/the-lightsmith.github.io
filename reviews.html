@@ -258,7 +258,7 @@ userVelocity += delta * 0.06;
         console.warn('Google Places credentials missing. Falling back to sample reviews.');
         return FALLBACK_REVIEWS;
       }
-      const fieldMask = ['reviews.authorAttribution','reviews.rating','reviews.text','reviews.publishTime','reviews.createTime'].join(',');
+      const fieldMask = ['reviews.authorAttribution','reviews.rating','reviews.text','reviews.publishTime'].join(',');
       const endpoint = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(place);
       const res = await fetch(endpoint, {
         headers: {
