@@ -80,9 +80,13 @@
   }
   </script>
   <style>
-  #reviewsCarousel { overflow: hidden; }
+  /* Override old peek-out carousel CSS that set overflow:visible on mobile */
+  #reviewsCarousel,
+  .reviews-carousel,
+  .carousel-viewport { overflow: hidden !important; }
+  #reviews.section   { overflow: hidden !important; }
+
   .carousel-viewport {
-    overflow: hidden;
     cursor: grab;
     user-select: none;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
@@ -95,7 +99,7 @@
     }
   }
   .carousel-viewport:active { cursor: grabbing; }
-  #reviewsList { display: flex; gap: 1.5rem; width: max-content; padding: 0.5rem 0; }
+  #reviewsList { display: flex; gap: 1.5rem; width: max-content; padding: 0.75rem 0; }
   .review-card { flex: 0 0 300px; }
   </style>
 
@@ -106,7 +110,7 @@
     <img src="The Lightsmith Logo - Text only.png" alt="The Lightsmith" class="hero__logo-text" width="360" height="120">
   </header>
 
-  <main id="main" style="overflow-x: clip;">
+  <main id="main">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href="index.html">Home</a></li>
@@ -226,12 +230,16 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
       // Duplicate the list for a seamless loop
       const doubled = reviews.concat(reviews);
       track.innerHTML = doubled.map(renderCard).join('');
-      // Measure after paint so layout is complete
+      // Double rAF + 50ms so iOS Safari has time to finish layout before measuring
       requestAnimationFrame(function(){
-        halfWidth = track.scrollWidth / 2;
-        lastTimestamp = null;
-        if (raf) cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(step);
+        requestAnimationFrame(function(){
+          setTimeout(function(){
+            halfWidth = track.scrollWidth / 2;
+            lastTimestamp = null;
+            if (raf) cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(step);
+          }, 50);
+        });
       });
     }
 
@@ -239,7 +247,8 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
     viewport.addEventListener('wheel', function(e) {
       e.preventDefault();
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.5;
-userVelocity += delta * 0.06;
+      userVelocity += delta * 0.06;
+      userVelocity = Math.max(-40, Math.min(40, userVelocity));
     }, { passive: false });
 
     // Touch swipe
@@ -251,6 +260,7 @@ userVelocity += delta * 0.06;
       if (lastTouchX === null) return;
       const dx = lastTouchX - e.touches[0].clientX;
       userVelocity += dx * 0.04;
+      userVelocity = Math.max(-40, Math.min(40, userVelocity));
       lastTouchX = e.touches[0].clientX;
     }, { passive: true });
     viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
