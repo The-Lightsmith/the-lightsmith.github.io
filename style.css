@@ -69,7 +69,8 @@ body {   min-height: 100vh;   background: linear-gradient(120deg, #e0eafc 0%, #c
   padding: 0.65rem 0.8rem;
   z-index: 50;
 }
-.mobile-cta-bar__link {   flex: 1;   text-align: center;   color: #fff;   font-weight: 700;   text-decoration: none;   padding: 0.65rem 0.5rem;   border-radius: 12px;   display: inline-flex;   justify-content: center;   align-items: center;   gap: 0.4rem;   transition: transform 0.18s ease; }
+.mobile-cta-bar__link {   flex: 1;   text-align: center;   color: #fff;   font-weight: 700;   text-decoration: none;   padding: 0.65rem 0.5rem;   border-radius: 12px;   display: inline-flex;   justify-content: center;   align-items: center;   gap: 0.4rem;   transition: transform 0.18s ease;   position: relative;   overflow: hidden; }
+.mobile-cta-bar__link::after {   content: '';   position: absolute;   top: 0;   left: 0;   width: 40%;   height: 100%;   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);   animation: btn-shine 3s ease-in-out infinite;   pointer-events: none; }
 .mobile-cta-bar__book {   background: linear-gradient(135deg, #f59e0b, #f97316);   box-shadow: 0 10px 24px rgba(249,115,22,0.35); }
 .mobile-cta-bar__call {   background: linear-gradient(135deg, #1e3a8a, #2563eb);   box-shadow: 0 10px 24px rgba(37,99,235,0.35); }
 .mobile-cta-bar__link:hover, .mobile-cta-bar__link:focus-visible {   transform: translateY(-1px); }
