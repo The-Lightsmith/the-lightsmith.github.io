@@ -80,12 +80,9 @@
   }
   </script>
   <style>
-  #reviewsCarousel { overflow: hidden; overflow: clip; }
+  #reviewsCarousel { overflow: hidden; }
   .carousel-viewport {
     overflow: hidden;
-    overflow: clip; /* stronger clipping — fixes iOS Safari will-change:transform escape */
-    -webkit-transform: translateZ(0); /* force compositing layer for older iOS */
-    transform: translateZ(0);
     cursor: grab;
     user-select: none;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
@@ -98,7 +95,7 @@
     }
   }
   .carousel-viewport:active { cursor: grabbing; }
-  #reviewsList { display: flex; gap: 1.5rem; width: max-content; will-change: transform; padding: 0.5rem 0; }
+  #reviewsList { display: flex; gap: 1.5rem; width: max-content; padding: 0.5rem 0; }
   .review-card { flex: 0 0 300px; }
   </style>
 
@@ -109,7 +106,7 @@
     <img src="The Lightsmith Logo - Text only.png" alt="The Lightsmith" class="hero__logo-text" width="360" height="120">
   </header>
 
-  <main id="main">
+  <main id="main" style="overflow-x: clip;">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href="index.html">Home</a></li>
