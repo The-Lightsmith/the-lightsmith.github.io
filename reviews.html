@@ -93,6 +93,7 @@
   .review-card { flex: 0 0 300px; }
 
   /* Safari / iOS: one card at a time with prev/next arrows */
+  #reviewsCarousel.safari-reviews { overflow: visible; }
   .safari-reviews .carousel-viewport {
     overflow: visible;
     cursor: default;
@@ -109,10 +110,12 @@
   .safari-reviews .review-card.active {
     display: block;
     flex: 0 0 auto;
-    width: min(300px, 90vw);
+    width: min(300px, 80vw);
     margin: 0 auto;
   }
   .safari-reviews .carousel-arrow { display: flex !important; }
+  .safari-reviews .carousel-arrow.prev { left: 0; }
+  .safari-reviews .carousel-arrow.next { right: 0; }
   </style>
 
 <body>
