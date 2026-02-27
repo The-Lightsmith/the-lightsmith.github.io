@@ -91,6 +91,28 @@
   .carousel-viewport:active { cursor: grabbing; }
   #reviewsList { display: flex; gap: 1.5rem; width: max-content; will-change: transform; padding: 0.5rem 0; }
   .review-card { flex: 0 0 300px; }
+
+  /* Safari / iOS: one card at a time with prev/next arrows */
+  .safari-reviews .carousel-viewport {
+    overflow: visible;
+    cursor: default;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .safari-reviews #reviewsList {
+    width: 100%;
+    justify-content: center;
+    will-change: auto;
+    transform: none !important;
+  }
+  .safari-reviews .review-card { display: none; }
+  .safari-reviews .review-card.active {
+    display: block;
+    flex: 0 0 auto;
+    width: min(300px, 90vw);
+    margin: 0 auto;
+  }
+  .safari-reviews .carousel-arrow { display: flex !important; }
   </style>
 
 <body>
@@ -216,8 +238,49 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
       raf = requestAnimationFrame(step);
     }
 
+    // Detect Safari / iOS — use static display instead of JS marquee
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+                  || /iPad|iPhone|iPod/.test(navigator.userAgent)
+                  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
     function startMarquee(reviews) {
-      // Duplicate the list for a seamless loop
+      if (isSafari) {
+        const carousel = document.getElementById('reviewsCarousel');
+        carousel.classList.add('safari-reviews');
+        track.innerHTML = reviews.map(renderCard).join('');
+
+        let idx = 0;
+        const cards = Array.from(track.querySelectorAll('.review-card'));
+        function showCard(i) {
+          cards.forEach(function(c, n) { c.classList.toggle('active', n === i); });
+        }
+        showCard(0);
+
+        const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.className = 'carousel-arrow prev';
+        prevBtn.setAttribute('aria-label', 'Previous review');
+        prevBtn.innerHTML = '&#10094;';
+        prevBtn.addEventListener('click', function() {
+          idx = (idx - 1 + cards.length) % cards.length;
+          showCard(idx);
+        });
+
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'carousel-arrow next';
+        nextBtn.setAttribute('aria-label', 'Next review');
+        nextBtn.innerHTML = '&#10095;';
+        nextBtn.addEventListener('click', function() {
+          idx = (idx + 1) % cards.length;
+          showCard(idx);
+        });
+
+        carousel.appendChild(prevBtn);
+        carousel.appendChild(nextBtn);
+        return;
+      }
+      // Desktop marquee
       const doubled = reviews.concat(reviews);
       track.innerHTML = doubled.map(renderCard).join('');
       // Measure after paint so layout is complete
@@ -229,25 +292,27 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
       });
     }
 
-    // Wheel: horizontal or vertical scroll boosts velocity
-    viewport.addEventListener('wheel', function(e) {
-      e.preventDefault();
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.5;
-userVelocity += delta * 0.06;
-    }, { passive: false });
+    if (!isSafari) {
+      // Wheel: horizontal or vertical scroll boosts velocity
+      viewport.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.5;
+        userVelocity += delta * 0.06;
+      }, { passive: false });
 
-    // Touch swipe
-    let lastTouchX = null;
-    viewport.addEventListener('touchstart', function(e) {
-      lastTouchX = e.touches[0].clientX;
-    }, { passive: true });
-    viewport.addEventListener('touchmove', function(e) {
-      if (lastTouchX === null) return;
-      const dx = lastTouchX - e.touches[0].clientX;
-      userVelocity += dx * 0.04;
-      lastTouchX = e.touches[0].clientX;
-    }, { passive: true });
-    viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
+      // Touch swipe
+      let lastTouchX = null;
+      viewport.addEventListener('touchstart', function(e) {
+        lastTouchX = e.touches[0].clientX;
+      }, { passive: true });
+      viewport.addEventListener('touchmove', function(e) {
+        if (lastTouchX === null) return;
+        const dx = lastTouchX - e.touches[0].clientX;
+        userVelocity += dx * 0.04;
+        lastTouchX = e.touches[0].clientX;
+      }, { passive: true });
+      viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
+    }
 
     async function fetchReviews() {
       const keyMeta = document.querySelector('meta[name="google-places-api-key"]');
