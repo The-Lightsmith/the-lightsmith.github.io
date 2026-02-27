@@ -80,34 +80,16 @@
   }
   </script>
   <style>
-  /* Override old peek-out carousel CSS */
-  #reviewsCarousel,
-  .reviews-carousel,
-  .carousel-viewport { overflow: hidden !important; }
-  #reviews.section   { overflow: hidden !important; }
-
-  @keyframes marquee-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
+  #reviewsCarousel { overflow: hidden; }
   .carousel-viewport {
+    overflow: hidden;
     cursor: grab;
     user-select: none;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100px, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 100px, black calc(100% - 100px), transparent 100%);
   }
-  @media (max-width: 500px) {
-    .carousel-viewport { -webkit-mask-image: none; mask-image: none; }
-  }
-  #reviewsList {
-    display: flex;
-    gap: 1.5rem;
-    width: max-content;
-    padding: 0.75rem 0;
-    animation: marquee-scroll 30s linear infinite;
-  }
-  #reviewsList.is-paused { animation-play-state: paused; }
+  .carousel-viewport:active { cursor: grabbing; }
+  #reviewsList { display: flex; gap: 1.5rem; width: max-content; will-change: transform; padding: 0.5rem 0; }
   .review-card { flex: 0 0 300px; }
   </style>
 
@@ -209,30 +191,63 @@
       ].join('\n');
     }
 
-    function startMarquee(reviews) {
-      // Double the list so translateX(-50%) creates a seamless loop
-      const doubled = reviews.concat(reviews);
-      track.innerHTML = doubled.map(renderCard).join('');
-      // Scale duration to content: more cards = longer cycle
-      track.style.animationDuration = Math.max(20, reviews.length * 3) + 's';
+    // Marquee state
+    const SPEED = 0.04;    // px per ms base scroll speed
+    let offset = 0;
+    let userVelocity = 0;  // extra px per ms from user input, decays over time
+    let halfWidth = 0;
+    let lastTimestamp = null;
+    let raf = null;
+
+    function step(timestamp) {
+      if (lastTimestamp === null) lastTimestamp = timestamp;
+      const dt = Math.min(timestamp - lastTimestamp, 50);
+      lastTimestamp = timestamp;
+
+      // Decay user-added velocity
+      userVelocity *= Math.pow(0.88, dt / 16.67);
+if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
+
+      offset += (SPEED + userVelocity) * dt;
+      if (halfWidth > 0) {
+  offset = ((offset % halfWidth) + halfWidth) % halfWidth;
+}
+      track.style.transform = 'translateX(' + (-offset) + 'px)';
+      raf = requestAnimationFrame(step);
     }
 
-    // Touch: pause while finger is down, resume on release
-    viewport.addEventListener('touchstart', function() {
-      track.classList.add('is-paused');
-    }, { passive: true });
-    viewport.addEventListener('touchend',    function() { track.classList.remove('is-paused'); }, { passive: true });
-    viewport.addEventListener('touchcancel', function() { track.classList.remove('is-paused'); }, { passive: true });
+    function startMarquee(reviews) {
+      // Duplicate the list for a seamless loop
+      const doubled = reviews.concat(reviews);
+      track.innerHTML = doubled.map(renderCard).join('');
+      // Measure after paint so layout is complete
+      requestAnimationFrame(function(){
+        halfWidth = track.scrollWidth / 2;
+        lastTimestamp = null;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(step);
+      });
+    }
 
-    // Wheel: temporarily speed up / slow down
-    let wheelTimer = null;
+    // Wheel: horizontal or vertical scroll boosts velocity
     viewport.addEventListener('wheel', function(e) {
       e.preventDefault();
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      track.style.animationDuration = (delta > 0 ? '10s' : '60s');
-      clearTimeout(wheelTimer);
-      wheelTimer = setTimeout(function() { track.style.animationDuration = ''; }, 800);
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY * 0.5;
+userVelocity += delta * 0.06;
     }, { passive: false });
+
+    // Touch swipe
+    let lastTouchX = null;
+    viewport.addEventListener('touchstart', function(e) {
+      lastTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    viewport.addEventListener('touchmove', function(e) {
+      if (lastTouchX === null) return;
+      const dx = lastTouchX - e.touches[0].clientX;
+      userVelocity += dx * 0.04;
+      lastTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
 
     async function fetchReviews() {
       const keyMeta = document.querySelector('meta[name="google-places-api-key"]');
