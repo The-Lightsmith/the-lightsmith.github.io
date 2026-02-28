@@ -113,7 +113,16 @@
     width: min(300px, 80vw);
     margin: 0 auto;
   }
-  .safari-reviews .review-card.active { transition: opacity 0.3s ease; }
+  @keyframes safari-card-next {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes safari-card-prev {
+    from { opacity: 0; transform: translateX(-40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .safari-reviews .review-card.active            { animation: safari-card-next 0.35s ease forwards; }
+  .safari-reviews .review-card.active.dir-prev   { animation: safari-card-prev 0.35s ease forwards; }
   </style>
 
 <body>
@@ -252,16 +261,22 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
 
         let idx = 0;
         const cards = Array.from(track.querySelectorAll('.review-card'));
-        function showCard(i) {
-          cards.forEach(function(c, n) { c.classList.toggle('active', n === i); });
+        function showCard(i, dir) {
+          cards.forEach(function(c, n) {
+            c.classList.remove('active', 'dir-prev');
+            if (n === i) {
+              c.classList.add('active');
+              if (dir === 'prev') c.classList.add('dir-prev');
+            }
+          });
         }
         showCard(0);
 
-        // Auto-cycle every 3 seconds
+        // Auto-cycle every 3 seconds (forward direction)
         function makeTimer() {
           return setInterval(function() {
             idx = (idx + 1) % cards.length;
-            showCard(idx);
+            showCard(idx, 'next');
           }, 3000);
         }
         let timer = makeTimer();
@@ -276,10 +291,11 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
           if (touchStartX === null) return;
           const dx = e.changedTouches[0].clientX - touchStartX;
           if (Math.abs(dx) > 40) {
-            idx = dx < 0
+            var dir = dx < 0 ? 'next' : 'prev';
+            idx = dir === 'next'
               ? (idx + 1) % cards.length
               : (idx - 1 + cards.length) % cards.length;
-            showCard(idx);
+            showCard(idx, dir);
           }
           touchStartX = null;
           timer = makeTimer();
