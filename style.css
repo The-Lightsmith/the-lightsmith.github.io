@@ -74,7 +74,7 @@ body {   min-height: 100vh;   background: linear-gradient(120deg, #e0eafc 0%, #c
 .mobile-cta-bar__link:hover, .mobile-cta-bar__link:focus-visible {   transform: translateY(-1px); }
 .hero__title, .section h2 {   font-family: 'Poppins', 'Inter', Arial, sans-serif;   font-weight: 800;   letter-spacing: 0.01em;   color: #23272f;   text-shadow: 0 2px 12px rgba(0,0,0,0.07); }
 .hero__meta {   display: flex;   flex-wrap: wrap;   justify-content: center;   gap: 1.1rem;   margin: 1.1rem 0 1.4rem; }
-.hero__rating {   background: rgba(255,255,255,0.82);   border-radius: 16px;   padding: 0.85rem 1.2rem;   box-shadow: 0 8px 22px rgba(15,23,42,0.15);   text-align: left;   min-width: 220px; }
+.hero__rating {   background: rgba(255,255,255,0.82);   border-radius: 16px;   padding: 0.85rem 1.2rem;   box-shadow: 0 8px 22px rgba(15,23,42,0.15);   text-align: center;   min-width: 220px; }
 .hero__stars {   font-size: 1.5rem;   letter-spacing: 0.2em;   color: #f59e0b; }
 .hero__rating-text {   margin: 0.35rem 0 0;   font-weight: 600;   color: var(--ink); }
 .hero__warranty {   background: linear-gradient(135deg, rgba(79,109,237,0.95), rgba(37,99,235,0.95));   color: #fff;   border-radius: 16px;   padding: 0.9rem 1.3rem;   box-shadow: 0 12px 28px rgba(37,99,235,0.28);   max-width: 320px; }
