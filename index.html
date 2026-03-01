@@ -66,12 +66,6 @@
     }
   }
 
-  /* Fine-tune bump at ~1180px */
-  @media (max-width: 1180px) {
-    body.home .header-bg-image {
-      
-    }
-  }
 
   /* Stage 2: phones landscape / midsize screens */
   @media (max-width: 800px) {
@@ -86,6 +80,137 @@
       background-position: 22% 145%;
     }
   }
+
+  /* ── Before/After Carousel ─────────────────────────── */
+  .ba-carousel {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .ba-arrow {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(30,58,138,0.22);
+    transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+  }
+  .ba-arrow:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+    transform: scale(1.08);
+    box-shadow: 0 8px 18px rgba(30,58,138,0.28);
+  }
+  .ba-stage { flex: 1; min-width: 0; }
+  .ba-slider {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    max-height: 55vh;
+    cursor: ew-resize;
+    user-select: none;
+    -webkit-user-select: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.13);
+    transition: opacity 0.25s ease;
+  }
+  .ba-before, .ba-after {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+  .ba-after { z-index: 1; }
+  .ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 44px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ba-handle-line {
+    flex: 1;
+    width: 2px;
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 0 5px rgba(0,0,0,0.35);
+  }
+  .ba-handle-btn {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(30,58,138,0.4);
+  }
+  .ba-label {
+    position: absolute;
+    bottom: 10px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .ba-label--before { left: 10px; }
+  .ba-label--after  { right: 10px; }
+  .ba-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  .ba-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d1d5db;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .ba-dot.active { background: #2563eb; transform: scale(1.35); }
+  @media (max-width: 600px) {
+    .ba-carousel { gap: 0.5rem; }
+    .ba-arrow { width: 36px; height: 36px; font-size: 1rem; }
+  }
+  /* Smooth transitions during hint animation */
+  .ba-slider.ba-hint-anim .ba-after  { transition: clip-path 0.45s ease; }
+  .ba-slider.ba-hint-anim .ba-handle { transition: left 0.45s ease; }
+  /* Smooth transitions when auto-recentering */
+  .ba-slider.ba-recenter .ba-after  { transition: clip-path 0.6s ease; }
+  .ba-slider.ba-recenter .ba-handle { transition: left 0.6s ease; }
+  /* Explorer zoom-out: show full image with dark letterbox */
+  .ba-slider { background: #111; }
+  .ba-slider.ba-contain .ba-before,
+  .ba-slider.ba-contain .ba-after { object-fit: contain; }
 </style>
 
 
@@ -296,37 +421,28 @@
     <section class="section" id="gallery" aria-labelledby="gallery-title">
       <div class="section__intro">
         <h2 id="gallery-title">Before &amp; After</h2>
-        <p class="section__lead">Swipe through real restorations completed for local drivers.</p>
+        <p class="section__lead">Drag the divider to compare &mdash; use arrows to browse more restorations.</p>
       </div>
-      <div class="gallery-slider-pairs">
-        <div class="slider-pair">
-          <button class="arrow left" type="button" aria-label="Previous Mustang photo">&#10094;</button>
-          <picture><source srcset="mustang-before.webp" type="image/webp"><img src="mustang-before.jpg" alt="Mustang headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
-          <picture><source srcset="mustang-after.webp" type="image/webp"><img src="mustang-after.jpg" alt="Mustang headlights after restoration" loading="lazy" decoding="async"></picture>
-          <button class="arrow right" type="button" aria-label="Next Mustang photo">&#10095;</button>
+      <div class="ba-carousel">
+        <button class="ba-arrow ba-arrow--prev" type="button" aria-label="Previous restoration">&#10094;</button>
+        <div class="ba-stage">
+          <div class="ba-slider" id="baSlider">
+            <img class="ba-before" id="baBefore" src="" alt="Before restoration">
+            <img class="ba-after"  id="baAfter"  src="" alt="After restoration">
+            <div class="ba-handle" id="baHandle">
+              <div class="ba-handle-line"></div>
+              <div class="ba-handle-btn" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L3 12l6-6M15 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="ba-handle-line"></div>
+            </div>
+            <span class="ba-label ba-label--before">Before</span>
+            <span class="ba-label ba-label--after">After</span>
+          </div>
         </div>
-
-        <div class="slider-pair">
-          <button class="arrow left" type="button" aria-label="Previous truck photo">&#10094;</button>
-          <picture><source srcset="truck-before.webp" type="image/webp"><img src="truck-before.jpg" alt="Truck headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
-          <picture><source srcset="truck-after.webp" type="image/webp"><img src="truck-after.jpg" alt="Truck headlights after restoration" loading="lazy" decoding="async"></picture>
-          <button class="arrow right" type="button" aria-label="Next truck photo">&#10095;</button>
-        </div>
-
-        <div class="slider-pair">
-          <button class="arrow left" type="button" aria-label="Previous sedan photo">&#10094;</button>
-          <picture><source srcset="car1-before.webp" type="image/webp"><img src="car1-before.jpg" alt="Sedan headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
-          <picture><source srcset="car1-after.webp" type="image/webp"><img src="car1-after.jpg" alt="Sedan headlights after restoration" loading="lazy" decoding="async"></picture>
-          <button class="arrow right" type="button" aria-label="Next sedan photo">&#10095;</button>
-        </div>
-
-        <div class="slider-pair">
-          <button class="arrow left" type="button" aria-label="Previous SUV photo">&#10094;</button>
-          <picture><source srcset="car2-before.webp" type="image/webp"><img src="car2-before.jpg" alt="SUV headlights before restoration" class="active" loading="lazy" decoding="async"></picture>
-          <picture><source srcset="car2-after.webp" type="image/webp"><img src="car2-after.jpg" alt="SUV headlights after restoration" loading="lazy" decoding="async"></picture>
-          <button class="arrow right" type="button" aria-label="Next SUV photo">&#10095;</button>
-        </div>
+        <button class="ba-arrow ba-arrow--next" type="button" aria-label="Next restoration">&#10095;</button>
       </div>
+      <div class="ba-dots" id="baDots" aria-hidden="true"></div>
     </section>
 
    <div class="section-divider" aria-hidden="true"></div>
@@ -544,25 +660,171 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.slider-pair').forEach(function(pair) {
-        const images = pair.querySelectorAll('img');
-        let index = 0;
-        function showImage(i) {
-          images.forEach(function(img, position) {
-            img.classList.toggle('active', position === i);
-          });
-        }
-        pair.querySelector('.arrow.left').addEventListener('click', function() {
-          index = (index - 1 + images.length) % images.length;
-          showImage(index);
-        });
-        pair.querySelector('.arrow.right').addEventListener('click', function() {
-          index = (index + 1) % images.length;
-          showImage(index);
-        });
-      });
+  (function() {
+    var BASE = 'images/Before and afters/';
+    var pairs = [
+      { before: 'car2-before.webp',            after: 'car2-after.webp',            label: 'Car 2' },
+      { before: 'car3-before.webp',            after: 'car3-after.webp',            label: 'Car 3' },
+      { before: 'explorer-before.webp',        after: 'explorer-after.webp',        label: 'Explorer', contain: true },
+      { before: 'mustang-before.webp',         after: 'mustang-after.webp',         label: 'Mustang' },
+      { before: 'sorento-before.webp',         after: 'sorento-after.webp',         label: 'Sorento' },
+      { before: 'sorentofoglight-before.webp', after: 'sorentofoglight-after.webp', label: 'Sorento Foglight' }
+    ];
+
+    // Fisher-Yates shuffle for random order on each load
+    for (var i = pairs.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = pairs[i]; pairs[i] = pairs[j]; pairs[j] = tmp;
+    }
+
+    var slider    = document.getElementById('baSlider');
+    var beforeImg = document.getElementById('baBefore');
+    var afterImg  = document.getElementById('baAfter');
+    var handle    = document.getElementById('baHandle');
+    var dotsEl    = document.getElementById('baDots');
+    var prevBtn   = document.querySelector('.ba-arrow--prev');
+    var nextBtn   = document.querySelector('.ba-arrow--next');
+    if (!slider) return;
+
+    var currentIdx = 0;
+    var timer = null;
+
+    // Build dot buttons
+    var dots = pairs.map(function(_, i) {
+      var d = document.createElement('button');
+      d.className = 'ba-dot';
+      d.setAttribute('aria-label', 'Show restoration ' + (i + 1));
+      d.addEventListener('click', function() { goTo(i); });
+      dotsEl.appendChild(d);
+      return d;
     });
+
+    function setHandle(pct) {
+      pct = Math.max(2, Math.min(98, pct));
+      afterImg.style.clipPath = 'inset(0 0 0 ' + pct + '%)';
+      handle.style.left = pct + '%';
+    }
+
+    function showPair(idx, animate) {
+      var p = pairs[idx];
+      slider.classList.toggle('ba-contain', !!p.contain);
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+      if (animate) {
+        slider.style.opacity = '0';
+        setTimeout(function() {
+          beforeImg.src = BASE + p.before;
+          afterImg.src  = BASE + p.after;
+          setHandle(50);
+          slider.style.opacity = '1';
+        }, 250);
+      } else {
+        beforeImg.src = BASE + p.before;
+        afterImg.src  = BASE + p.after;
+        setHandle(50);
+        slider.style.opacity = '1';
+      }
+    }
+
+    // ── Auto-recenter after idle ──
+    var recenterTimer = null;
+    function scheduleRecenter() {
+      clearTimeout(recenterTimer);
+      recenterTimer = setTimeout(function() {
+        slider.classList.add('ba-recenter');
+        setHandle(50);
+        setTimeout(function() { slider.classList.remove('ba-recenter'); }, 700);
+      }, 2500);
+    }
+    function cancelRecenter() {
+      clearTimeout(recenterTimer);
+      slider.classList.remove('ba-recenter');
+    }
+
+    function goTo(idx) {
+      cancelRecenter();
+      currentIdx = ((idx % pairs.length) + pairs.length) % pairs.length;
+      showPair(currentIdx, true);
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(function() { goTo(currentIdx + 1); }, 5000);
+    }
+
+    prevBtn.addEventListener('click', function() { goTo(currentIdx - 1); });
+    nextBtn.addEventListener('click', function() { goTo(currentIdx + 1); });
+
+    // ── Hint animation: two gentle nudges right before first interaction ──
+    var hinted = false;
+    function markInteracted() {
+      if (hinted) return;
+      hinted = true;
+      slider.classList.remove('ba-hint-anim');
+    }
+    function runHint() {
+      if (hinted) return;
+      slider.classList.add('ba-hint-anim');
+      var steps = [[200, 65], [650, 50], [1050, 65], [1500, 50]];
+      steps.forEach(function(s) {
+        setTimeout(function() { if (!hinted) setHandle(s[1]); }, s[0]);
+      });
+      setTimeout(function() { slider.classList.remove('ba-hint-anim'); }, 1800);
+    }
+    setTimeout(runHint, 1200);
+
+    // ── Mouse drag ──
+    var isDragging = false;
+    slider.addEventListener('mousedown', function(e) {
+      markInteracted();
+      cancelRecenter();
+      isDragging = true;
+      clearInterval(timer);
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      var rect = slider.getBoundingClientRect();
+      setHandle(((e.clientX - rect.left) / rect.width) * 100);
+    });
+    window.addEventListener('mouseup', function() {
+      if (!isDragging) return;
+      isDragging = false;
+      scheduleRecenter();
+      resetTimer();
+    });
+
+    // ── Touch drag (horizontal = compare, vertical = page scroll) ──
+    var txStart = null, tyStart = null, touchIsHoriz = false;
+    slider.addEventListener('touchstart', function(e) {
+      markInteracted();
+      cancelRecenter();
+      txStart = e.touches[0].clientX;
+      tyStart = e.touches[0].clientY;
+      touchIsHoriz = false;
+    }, { passive: true });
+    slider.addEventListener('touchmove', function(e) {
+      if (txStart === null) return;
+      var dx = Math.abs(e.touches[0].clientX - txStart);
+      var dy = Math.abs(e.touches[0].clientY - tyStart);
+      if (!touchIsHoriz && dx > dy) {
+        touchIsHoriz = true;
+        clearInterval(timer);
+      }
+      if (touchIsHoriz) {
+        e.preventDefault();
+        var rect = slider.getBoundingClientRect();
+        setHandle(((e.touches[0].clientX - rect.left) / rect.width) * 100);
+      }
+    }, { passive: false });
+    slider.addEventListener('touchend', function() {
+      if (touchIsHoriz) { scheduleRecenter(); resetTimer(); }
+      txStart = null; tyStart = null; touchIsHoriz = false;
+    }, { passive: true });
+
+    showPair(0, false);
+    resetTimer();
+  })();
   </script>
 <script>
 (function(){
