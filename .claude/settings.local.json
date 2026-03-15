@@ -3,7 +3,11 @@
     "allow": [
       "Bash(git add reviews.html)",
       "Bash(git commit:*)",
-      "Bash(git add index.html)"
+      "Bash(git add index.html)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(ls /Users/crackerjack/the-lightsmith.github.io/*.png /Users/crackerjack/the-lightsmith.github.io/*.jpg /Users/crackerjack/the-lightsmith.github.io/*.webp)",
+      "Bash(grep -rn \"Logo - Text\\\\|logo - car\" /Users/crackerjack/the-lightsmith.github.io/*.html)"
     ]
   }
 }
