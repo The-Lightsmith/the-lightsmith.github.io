@@ -125,10 +125,6 @@ body {   min-height: 100vh;   background: linear-gradient(120deg, #e0eafc 0%, #c
 .social-icons a:hover {   color: #1e3a8a;   transform: scale(1.18) rotate(-6deg);   text-shadow: 0 6px 24px rgba(30,58,138,0.18); }
 .site-footer a[href^="tel"], .site-footer a[href^="mailto"] {   color: #6cb6f9;   text-decoration: underline;   font-weight: 600;   transition: color 0.2s; }
 .site-footer a[href^="tel"]:hover, .site-footer a[href^="mailto"]:hover {   color: #338eda; }
-.bg-animated {   position: fixed;   inset: 0;   z-index: -2;   overflow: hidden;   pointer-events: none; }
-.bg-shape {   position: absolute;   filter: blur(2px);   will-change: transform, opacity; }
-.bg-shape-1 {   top: -80px;   left: -120px;   width: 480px;   opacity: 0.7; }
-.bg-shape-2 {   bottom: -100px;   right: -80px;   width: 340px;   opacity: 0.5; }
 .hero__logo {   width: 110px;   max-width: 40vw;   height: auto;   margin: 0 auto 1.2rem auto;   display: block;   border-radius: 16px;   filter: drop-shadow(0 4px 16px rgba(0,0,0,0.10)); }
 .hero__logo-text { display: block; width: min(450px, 75vw); height: auto; margin: 0.5rem auto 0; transform: none; }
 .hero { padding: 1.5rem 1.5rem 2.25rem; }

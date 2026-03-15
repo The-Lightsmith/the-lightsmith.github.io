@@ -211,6 +211,32 @@
   .ba-slider { background: #111; }
   .ba-slider.ba-contain .ba-before,
   .ba-slider.ba-contain .ba-after { object-fit: contain; }
+
+  /* ── Multi-vehicle callout ──────────────────────────────── */
+  .callout-card {
+    max-width: 680px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #93c5fd;
+    border-radius: 14px;
+    padding: 2rem 2.5rem;
+    text-align: center;
+  }
+  .callout-card h2 {
+    font-size: 1.4rem;
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+  }
+  .callout-card p {
+    font-size: 1.05rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+  }
+  .callout-card__sub {
+    font-size: 0.9rem !important;
+    color: #6b7280 !important;
+    margin-top: 0.5rem !important;
+  }
 </style>
 
 
@@ -272,6 +298,30 @@
           "@type": "Answer",
           "text": "The Lightsmith is a mobile service covering Caldwell, Nampa, Meridian, Boise, Kuna, Eagle, Middleton, Star, Emmett, Fruitland and surrounding Treasure Valley communities."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Will this really last? I've had restorations fade back before.",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most restorations that yellow back quickly used wax-based or sealant-light kits that wear off within months. We use the Headlight Magics professional system, which applies a ceramic UV sealant — not a wax coating. It bonds to the lens and is backed by our 5-year satisfaction guarantee. If it fades before five years, we come back and make it right."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is this different from an AutoZone kit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Store kits are designed for DIY use and typically include basic sandpaper and a wax-based sealant. The results can look good initially but often fade within a season. We hand-sand through multiple grits, polish to optical clarity, then seal with the Headlight Magics ceramic UV coating — a professional-grade product not available in retail stores. You also get a 5-year warranty and don't have to spend a Saturday doing it yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "My headlights are really bad — can they even be restored?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Almost always yes. Even heavily oxidized, deeply yellowed, or scratched lenses can typically be brought back to near-new clarity with multi-stage sanding. If you're unsure, text us a photo at 208-614-3414 and we'll give you an honest answer before you book."
+        }
       }
     ]
   }
@@ -302,21 +352,8 @@
     <div class="header-bg-image"></div>
   </div>
 
-  <div class="bg-animated" aria-hidden="true">
-    <svg class="bg-shape bg-shape-1" width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="200" cy="200" rx="180" ry="120" fill="#e5e7eb" opacity="0.7">
-        <animate attributeName="rx" values="180;200;180" dur="8s" repeatCount="indefinite"></animate>
-        <animate attributeName="ry" values="120;140;120" dur="10s" repeatCount="indefinite"></animate>
-      </ellipse>
-    </svg>
-    <svg class="bg-shape bg-shape-2" width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="150" cy="150" r="120" fill="#d1d5db" opacity="0.5">
-        <animate attributeName="r" values="120;140;120" dur="12s" repeatCount="indefinite"></animate>
-      </circle>
-    </svg>
-  </div>
 
-  <div id="site-nav" class="site-nav-placeholder"></div>
+<div id="site-nav" class="site-nav-placeholder"></div>
   
 <header class="site-header" id="top">
   
@@ -366,9 +403,13 @@
         </div>
 
         <div class="cta-row">
-          <a href="book.html" class="btn btn--orange"> 
+          <a href="book.html" class="btn btn--orange">
             <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
             <span>Book an Appointment</span>
+        </a>
+        <a href="sms:2086143414&body=Hi%2C%20I%20have%20a%20question%20about%20headlight%20restoration" class="btn">
+          <i class="fa-solid fa-comment-sms" aria-hidden="true"></i>
+          <span>Text Us a Question</span>
         </a>
         <a href="https://g.page/r/CWJUL5k6yNeKEAI/review" class="btn" target="_blank" rel="noopener">
           <i class="fa-solid fa-star" aria-hidden="true"></i>
@@ -388,189 +429,212 @@
 
 
     <main id="main">
-      
-       <div class="section-divider" aria-hidden="true"></div>
-    <section class="section" id="how-it-works" aria-labelledby="how-title">
-      <div class="section__intro">
-        <h2 id="how-title">How It Works</h2>
-        <p class="section__lead">Four simple steps to brighter, safer night driving.</p>
-      </div>
-      <ol class="process-steps">
-        <li>
-          <h3>1. Book in Seconds</h3>
-          <p>Choose a slot online or <a href="contact.html">request a custom time</a> and we&#8217;ll confirm within one business day.</p>
-        </li>
-        <li>
-          <h3>2. We Come to You</h3>
-          <p>We travel across the Treasure Valley. Hand sanding means no power hookup is necessary—just a safe spot to work.</p>
-        </li>
-        <li>
-          <h3>3. Restore &amp; Seal</h3>
-          <p>Multi-stage sanding removes oxidation, then the Headlight Magics UV sealant locks in clarity for years.</p>
-        </li>
-        <li>
-          <h3>4. Care &amp; Drive</h3>
-          <p>Headlights are road-ready in an hour, water-safe after two, and car-wash safe the next day.</p>
-        </li>
-      </ol>
-    </section>
 
-   <div class="section-divider" aria-hidden="true"></div>
+      <div class="section-divider" aria-hidden="true"></div>
 
-
-    <section class="section" id="gallery" aria-labelledby="gallery-title">
-      <div class="section__intro">
-        <h2 id="gallery-title">Before &amp; After</h2>
-        <p class="section__lead">Drag the divider to compare &mdash; use arrows to browse more restorations.</p>
-      </div>
-      <div class="ba-carousel">
-        <button class="ba-arrow ba-arrow--prev" type="button" aria-label="Previous restoration">&#10094;</button>
-        <div class="ba-stage">
-          <div class="ba-slider" id="baSlider">
-            <img class="ba-before" id="baBefore" src="" alt="Before restoration">
-            <img class="ba-after"  id="baAfter"  src="" alt="After restoration">
-            <div class="ba-handle" id="baHandle">
-              <div class="ba-handle-line"></div>
-              <div class="ba-handle-btn" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L3 12l6-6M15 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="ba-handle-line"></div>
-            </div>
-            <span class="ba-label ba-label--before">Before</span>
-            <span class="ba-label ba-label--after">After</span>
-          </div>
+      <section class="section" id="homeTestimonials" aria-labelledby="home-testimonials-title">
+        <div class="section__intro">
+          <h2 id="home-testimonials-title">Recent Praise</h2>
+          <p class="section__lead">A quick snapshot of what local drivers are saying right after their appointment.</p>
         </div>
-        <button class="ba-arrow ba-arrow--next" type="button" aria-label="Next restoration">&#10095;</button>
-      </div>
-      <div class="ba-dots" id="baDots" aria-hidden="true"></div>
-    </section>
+        <div class="testimonial-strip" id="homeTestimonialsList" aria-live="polite">
+          <p class="muted testimonial-loading">Loading local reviews&hellip;</p>
+        </div>
+      </section>
 
-   <div class="section-divider" aria-hidden="true"></div>
+      <div class="section-divider" aria-hidden="true"></div>
 
-    <section class="section" id="video" aria-labelledby="video-title">
-      <div class="section__intro">
-        <h2 id="video-title">See It in Action</h2>
-        <p class="section__lead">Watch a real restoration from start to finish.</p>
-      </div>
-      <div class="reel-wrapper">
-        <iframe
-          src="https://www.instagram.com/reel/DMrkFAlMGDW/embed/"
-          width="400"
-          height="700"
-          frameborder="0"
-          scrolling="no"
-          allowtransparency="true"
-          allow="encrypted-media"
-          loading="lazy"
-          title="The Lightsmith headlight restoration reel"
-        ></iframe>
-      </div>
-      <p style="margin-top:1rem;font-size:0.9rem;color:var(--muted);">
-        <a href="https://www.instagram.com/the_lightsmith_restoration/" target="_blank" rel="noopener" style="color:var(--line);font-weight:600;">@the_lightsmith_restoration</a> on Instagram
-      </p>
-    </section>
+      <section class="section" id="gallery" aria-labelledby="gallery-title">
+        <div class="section__intro">
+          <h2 id="gallery-title">Before &amp; After</h2>
+          <p class="section__lead">Drag the divider to compare &mdash; use arrows to browse more restorations.</p>
+        </div>
+        <div class="ba-carousel">
+          <button class="ba-arrow ba-arrow--prev" type="button" aria-label="Previous restoration">&#10094;</button>
+          <div class="ba-stage">
+            <div class="ba-slider" id="baSlider">
+              <img class="ba-before" id="baBefore" src="" alt="Before restoration">
+              <img class="ba-after"  id="baAfter"  src="" alt="After restoration">
+              <div class="ba-handle" id="baHandle">
+                <div class="ba-handle-line"></div>
+                <div class="ba-handle-btn" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L3 12l6-6M15 6l6 6-6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="ba-handle-line"></div>
+              </div>
+              <span class="ba-label ba-label--before">Before</span>
+              <span class="ba-label ba-label--after">After</span>
+            </div>
+          </div>
+          <button class="ba-arrow ba-arrow--next" type="button" aria-label="Next restoration">&#10095;</button>
+        </div>
+        <div class="ba-dots" id="baDots" aria-hidden="true"></div>
+      </section>
 
-   <div class="section-divider" aria-hidden="true"></div>
+      <div class="section-divider" aria-hidden="true"></div>
 
-    <section class="section" id="benefits" aria-labelledby="benefits-title">
-      <div class="section__intro">
-        <h2 id="benefits-title">Why Drivers Choose The Lightsmith</h2>
-        <p class="section__lead">Professional results, transparent pricing, and service that comes to you.</p>
-      </div>
-      <div class="benefits-grid">
-        <article class="benefit-card">
-          <h3>Mobile &amp; Flexible</h3>
-          <p>We come to your driveway or shop space anywhere in the Treasure Valley, keeping your day on track.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>5-Year Warranty</h3>
-          <p>Premium UV protection seals the clarity in place. If it fades before five years, we make it right.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Crystal-Clear Finish</h3>
-          <p>Multi-stage sanding and ceramic sealing eliminate haze, restore beam throw, and boost resale value.</p>
-        </article>
-        <article class="benefit-card">
-          <h3>Fast Turnaround</h3>
-          <p>Most restorations are complete in under an hour so you can get back on the road with confidence.</p>
-        </article>
-      </div>
-    </section>
+      <section class="section" id="video" aria-labelledby="video-title">
+        <div class="section__intro">
+          <h2 id="video-title">See It in Action</h2>
+          <p class="section__lead">Watch a real restoration from start to finish.</p>
+        </div>
+        <div class="reel-wrapper">
+          <iframe
+            src="https://www.instagram.com/reel/DMrkFAlMGDW/embed/"
+            width="400"
+            height="700"
+            frameborder="0"
+            scrolling="no"
+            allowtransparency="true"
+            allow="encrypted-media"
+            loading="lazy"
+            title="The Lightsmith headlight restoration reel"
+          ></iframe>
+        </div>
+        <p style="margin-top:1rem;font-size:0.9rem;color:var(--muted);">
+          <a href="https://www.instagram.com/the_lightsmith_restoration/" target="_blank" rel="noopener" style="color:var(--line);font-weight:600;">@the_lightsmith_restoration</a> on Instagram
+        </p>
+      </section>
 
-    <div class="section-divider" aria-hidden="true"></div>
+      <div class="section-divider" aria-hidden="true"></div>
 
+      <section class="section" id="benefits" aria-labelledby="benefits-title">
+        <div class="section__intro">
+          <h2 id="benefits-title">Why Drivers Choose The Lightsmith</h2>
+          <p class="section__lead">Professional results, transparent pricing, and service that comes to you.</p>
+        </div>
+        <div class="benefits-grid">
+          <article class="benefit-card">
+            <h3>Mobile &amp; Flexible</h3>
+            <p>We come to your driveway or shop space anywhere in the Treasure Valley, keeping your day on track.</p>
+          </article>
+          <article class="benefit-card">
+            <h3>5-Year Warranty</h3>
+            <p>Premium UV protection seals the clarity in place. If it fades before five years, we make it right.</p>
+          </article>
+          <article class="benefit-card">
+            <h3>Crystal-Clear Finish</h3>
+            <p>Multi-stage sanding and ceramic sealing eliminate haze, restore beam throw, and boost resale value.</p>
+          </article>
+          <article class="benefit-card">
+            <h3>Fast Turnaround</h3>
+            <p>Most restorations are complete in under an hour so you can get back on the road with confidence.</p>
+          </article>
+        </div>
+      </section>
 
-    <section class="section" id="homeTestimonials" aria-labelledby="home-testimonials-title">
-      <div class="section__intro">
-        <h2 id="home-testimonials-title">Recent Praise</h2>
-        <p class="section__lead">A quick snapshot of what local drivers are saying right after their appointment.</p>
-      </div>
-      <div class="testimonial-strip" id="homeTestimonialsList" aria-live="polite">
-        <p class="muted testimonial-loading">Loading local reviews&hellip;</p>
-      </div>
-    </section>
+      <div class="section-divider" aria-hidden="true"></div>
 
-    <div class="section-divider" aria-hidden="true"></div>
+      <section class="section" id="how-it-works" aria-labelledby="how-title">
+        <div class="section__intro">
+          <h2 id="how-title">How It Works</h2>
+          <p class="section__lead">Four simple steps to brighter, safer night driving.</p>
+        </div>
+        <ol class="process-steps">
+          <li>
+            <h3>1. Book in Seconds</h3>
+            <p>Choose a slot online or <a href="contact.html">request a custom time</a> and we&#8217;ll confirm within one business day.</p>
+          </li>
+          <li>
+            <h3>2. We Come to You</h3>
+            <p>We travel across the Treasure Valley. Hand sanding means no power hookup is necessary—just a safe spot to work.</p>
+          </li>
+          <li>
+            <h3>3. Restore &amp; Seal</h3>
+            <p>Multi-stage sanding removes oxidation, then the Headlight Magics UV sealant locks in clarity for years.</p>
+          </li>
+          <li>
+            <h3>4. Care &amp; Drive</h3>
+            <p>Headlights are road-ready in an hour, water-safe after two, and car-wash safe the next day.</p>
+          </li>
+        </ol>
+      </section>
 
-    <section class="section" id="service-area" aria-labelledby="service-area-title">
-      <div class="section__intro">
-        <h2 id="service-area-title">Service Area</h2>
-        <p class="section__lead">Mobile headlight restoration throughout Caldwell and the broader Treasure Valley.</p>
-      </div>
-      <ul class="service-area-grid">
-        <li>Caldwell</li>
-        <li>Nampa</li>
-        <li>Meridian</li>
-        <li>Boise</li>
-        <li>Kuna</li>
-        <li>Eagle</li>
-        <li>Middleton</li>
-        <li>Star</li>
-        <li>Emmett</li>
-        <li>Fruitland</li>
-      </ul>
-      <p class="service-area-note">Need headlight restoration outside these cities? <a href="contact.html">Send a quick note</a> and we&#8217;ll see if we can help.</p>
-      <div class="service-area-map">
-        <iframe
-          src="https://maps.google.com/maps?ll=43.62,-116.48&z=10&t=m&output=embed"
-          width="100%"
-          height="380"
-          style="border:0; display:block;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="The Lightsmith service area — Treasure Valley, Idaho"
-        ></iframe>
-      </div>
-    </section>
-  <div class="section-divider" aria-hidden="true"></div>
-    <section class="section" id="faq" aria-labelledby="faq-title">
-      <div class="section__intro">
-        <h2 id="faq-title">Frequently Asked Questions</h2>
-        <p class="section__lead">Quick answers to the questions drivers ask before booking.</p>
-      </div>
-      <div class="faq-list">
-        <details open>
-          <summary>What does the service cost?</summary>
-          <p>Our full restoration is $150 per vehicle. That includes sanding, polishing, the Headlight Magics UV sealant, and a five-year satisfaction guarantee.</p>
-        </details>
-        <details>
-          <summary>How soon can I drive after the appointment?</summary>
-          <p>You can drive immediately. Avoid water for the first hour and skip the car wash for 24 hours to let the sealant fully cure.</p>
-        </details>
-        <details>
-          <summary>How should I care for the headlights afterward?</summary>
-          <p>Use touch-free or gentle hand washes and avoid harsh abrasives. We&#8217;ve written a short <a href="care.html">care guide</a> with all the tips.</p>
-        </details>
-        <details>
-          <summary>Do you travel outside the Treasure Valley?</summary>
-          <p>Yes! We routinely serve Caldwell, Nampa, Meridian, Boise, Eagle, Star, Middleton, Kuna, Fruitland, Emmett, and surrounding communities. Message us for longer trips.</p>
-        </details>
-      </div>
-      <p class="service-area-note" style="margin-top:1.2rem;">Still wondering about something else? <a href="contact.html">Reach out</a> and we&#8217;ll respond the same day.</p>
-    </section>
+      <div class="section-divider" aria-hidden="true"></div>
 
-    <div class="section-divider" aria-hidden="true"></div>
+      <section class="section" id="service-area" aria-labelledby="service-area-title">
+        <div class="section__intro">
+          <h2 id="service-area-title">Service Area</h2>
+          <p class="section__lead">Mobile headlight restoration throughout Caldwell and the broader Treasure Valley.</p>
+        </div>
+        <ul class="service-area-grid">
+          <li>Caldwell</li>
+          <li>Nampa</li>
+          <li>Meridian</li>
+          <li>Boise</li>
+          <li>Kuna</li>
+          <li>Eagle</li>
+          <li>Middleton</li>
+          <li>Star</li>
+          <li>Emmett</li>
+          <li>Fruitland</li>
+        </ul>
+        <p class="service-area-note">Need headlight restoration outside these cities? <a href="contact.html">Send a quick note</a> and we&#8217;ll see if we can help.</p>
+        <div class="service-area-map">
+          <iframe
+            src="https://maps.google.com/maps?ll=43.62,-116.48&z=10&t=m&output=embed"
+            width="100%"
+            height="380"
+            style="border:0; display:block;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="The Lightsmith service area — Treasure Valley, Idaho"
+          ></iframe>
+        </div>
+      </section>
+
+      <div class="section-divider" aria-hidden="true"></div>
+
+      <section class="section" id="multi-vehicle" aria-labelledby="multi-vehicle-title">
+        <div class="callout-card">
+          <h2 id="multi-vehicle-title">Restoring More Than One Car?</h2>
+          <p>Add a second vehicle at the same appointment for just $100 &mdash; no extra trip, no extra hassle.</p>
+          <p class="callout-card__sub">Ask us about multi-vehicle appointments when you book.</p>
+        </div>
+      </section>
+
+      <div class="section-divider" aria-hidden="true"></div>
+
+      <section class="section" id="faq" aria-labelledby="faq-title">
+        <div class="section__intro">
+          <h2 id="faq-title">Frequently Asked Questions</h2>
+          <p class="section__lead">Quick answers to the questions drivers ask before booking.</p>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary>What does the service cost?</summary>
+            <p>Our full restoration is $150 per vehicle. That includes sanding, polishing, the Headlight Magics UV sealant, and a five-year satisfaction guarantee.</p>
+          </details>
+          <details>
+            <summary>How soon can I drive after the appointment?</summary>
+            <p>You can drive immediately. Avoid water for the first hour and skip the car wash for 24 hours to let the sealant fully cure.</p>
+          </details>
+          <details>
+            <summary>How should I care for the headlights afterward?</summary>
+            <p>Use touch-free or gentle hand washes and avoid harsh abrasives. We&#8217;ve written a short <a href="care.html">care guide</a> with all the tips.</p>
+          </details>
+          <details>
+            <summary>Do you travel outside the Treasure Valley?</summary>
+            <p>Yes! We routinely serve Caldwell, Nampa, Meridian, Boise, Eagle, Star, Middleton, Kuna, Fruitland, Emmett, and surrounding communities. Message us for longer trips.</p>
+          </details>
+          <details>
+            <summary>Will this really last? I&#8217;ve had restorations fade back before.</summary>
+            <p>Most restorations that yellow back quickly used wax-based or sealant-light kits that wear off within months. We use the Headlight Magics professional system, which applies a ceramic UV sealant &mdash; not a wax coating. It bonds to the lens and is backed by our 5-year satisfaction guarantee. If it fades before five years, we come back and make it right.</p>
+          </details>
+          <details>
+            <summary>How is this different from an AutoZone kit?</summary>
+            <p>Store kits are designed for DIY use and typically include basic sandpaper and a wax-based sealant. The results can look good initially but often fade within a season. We hand-sand through multiple grits, polish to optical clarity, then seal with the Headlight Magics ceramic UV coating &mdash; a professional-grade product not available in retail stores. You also get a 5-year warranty and don&#8217;t have to spend a Saturday doing it yourself.</p>
+          </details>
+          <details>
+            <summary>My headlights are really bad &mdash; can they even be restored?</summary>
+            <p>Almost always yes. Even heavily oxidized, deeply yellowed, or scratched lenses can typically be brought back to near-new clarity with multi-stage sanding. If you&#8217;re unsure, text us a photo at 208-614-3414 and we&#8217;ll give you an honest answer before you book.</p>
+          </details>
+        </div>
+        <p class="service-area-note" style="margin-top:1.2rem;">Still wondering about something else? <a href="contact.html">Reach out</a> and we&#8217;ll respond the same day.</p>
+      </section>
+
+      <div class="section-divider" aria-hidden="true"></div>
 
   </main>
 

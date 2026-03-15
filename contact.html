@@ -71,19 +71,8 @@
   </div>
 
   <div class="form-row">
-    <label for="email">Email</label>
-    <input id="email" name="email" type="email" autocomplete="email" required>
-  </div>
-
-  <div class="form-row">
-    <label for="phone">Phone <span class="muted">(optional)</span></label>
-    <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="208-555-1234" autocomplete="tel">
-  </div>
-
-  <div class="form-row">
-    <label for="preferred-date">Preferred appointment date <span class="muted">(optional)</span></label>
-    <input id="preferred-date" name="preferred_date" type="date">
-    <p class="small-hint">Choose the day that works best for you; we&rsquo;ll confirm availability.</p>
+    <label for="email">Phone or Email</label>
+    <input id="email" name="email" type="text" placeholder="Phone or email — whichever you prefer" required>
   </div>
 
   <div class="form-row">
@@ -115,14 +104,52 @@
   </script>
   <script>
     (function(){
-      var dateInput = document.getElementById('preferred-date');
-      if (!dateInput) return;
-      var today = new Date();
-      var iso = today.toISOString().split('T')[0];
-      dateInput.min = iso;
+      var field = document.getElementById('email');
+      var hint = document.createElement('p');
+      hint.className = 'small-hint';
+      hint.style.display = 'none';
+      hint.style.color = '#dc2626';
+      hint.textContent = 'Please enter a valid email address or phone number.';
+      field.parentNode.appendChild(hint);
+
+      function isValid(val) {
+        val = val.trim();
+        // email: contains @ and a dot after @
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return true;
+        // phone: at least 7 digits, may include spaces, dashes, dots, parens, +
+        if (/^[+\(\)\s\-\.0-9]{7,}$/.test(val) && val.replace(/\D/g,'').length >= 7) return true;
+        return false;
+      }
+
+      field.addEventListener('blur', function(){
+        if (field.value && !isValid(field.value)) {
+          hint.style.display = '';
+          field.setAttribute('aria-invalid', 'true');
+        } else {
+          hint.style.display = 'none';
+          field.removeAttribute('aria-invalid');
+        }
+      });
+      field.addEventListener('input', function(){
+        if (hint.style.display !== 'none') {
+          if (isValid(field.value)) {
+            hint.style.display = 'none';
+            field.removeAttribute('aria-invalid');
+          }
+        }
+      });
+
+      document.getElementById('contactForm').addEventListener('submit', function(e){
+        if (!isValid(field.value)) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          hint.style.display = '';
+          field.setAttribute('aria-invalid', 'true');
+          field.focus();
+        }
+      }, true);
     })();
   </script>
-  
   <div class="mobile-cta-bar">
     <a class="mobile-cta-bar__link mobile-cta-bar__book" href="book.html">Book Now</a>
     <a class="mobile-cta-bar__link mobile-cta-bar__call" href="tel:2086143414">Call 208-614-3414</a>
