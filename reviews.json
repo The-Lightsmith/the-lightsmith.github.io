@@ -1,32 +1,70 @@
 {
   "reviews": [
     {
-      "authorAttribution": {
-        "displayName": "Aaron M.",
-        "uri": "https://g.page/r/CWJUL5k6yNeKEAE/review"
-      },
       "rating": 5,
-      "text": { "text": "Phenomenal work! Lights look brand new and Jack was right on time." },
-      "publishTime": "2024-10-01T00:00:00Z"
+      "text": {
+        "text": "He was super fast, did an awesome job simple explanations, and the difference is staggering. I had tried the baking soda and vinegar but it did nothing. This actually made the lights look brand new.",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "peter compton",
+        "uri": "https://www.google.com/maps/contrib/118220811036667387648/reviews",
+        "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjVhkCNRDmKYVET869iOm9n8ZWlYV1ekFL6-ykNwuH8SUk8CB9Hw6w=s128-c0x00000000-cc-rp-mo-ba2"
+      },
+      "publishTime": "2025-07-23T00:52:38.464094188Z"
     },
     {
-      "authorAttribution": {
-        "displayName": "Katie S.",
-        "uri": "https://g.page/r/CWJUL5k6yNeKEAE/review"
-      },
       "rating": 5,
-      "text": { "text": "Booking was easy, the results were incredible, and the five year warranty is a bonus." },
-      "publishTime": "2024-08-18T00:00:00Z"
+      "text": {
+        "text": "Cannot begin to describe how amazing this service was.   When purchasing our van many years ago the dealer installed an aftermarket headlight lens to protect them from bugs I guess.  Fast forward many years and the glue/lens was yellow and cloudy.  He totally fixed it.  Probably a much more intense job than he expected but he completely delivered..   My headlights look and shine like new!   THANKS LIGHTSMITH!",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "Mark Bishop",
+        "uri": "https://www.google.com/maps/contrib/110185072519620368040/reviews",
+        "photoUri": "https://lh3.googleusercontent.com/a/ACg8ocJgCOPyv_YXBRIBPAriQD_E6OwNqu78WEGbYh6E63Y2d42JzA=s128-c0x00000000-cc-rp-mo"
+      },
+      "publishTime": "2025-08-07T10:33:46.968573246Z"
     },
     {
-      "authorAttribution": {
-        "displayName": "Luis R.",
-        "uri": "https://g.page/r/CWJUL5k6yNeKEAE/review"
-      },
       "rating": 5,
-      "text": { "text": "Night visibility improved immediately. Highly recommend The Lightsmith." },
-      "publishTime": "2024-07-11T00:00:00Z"
+      "text": {
+        "text": "We've tried getting the fog off of our headlights for YEARS with no success, but Jack stayed for hours to get everything off! They look literally flawless. I'm more than blown away. Wouldn't go anywhere else.",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "Kathryn Bishop",
+        "uri": "https://www.google.com/maps/contrib/117582538276298721828/reviews",
+        "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjUDEb4RkJZB9ECf7K6-UpdGThPwxx2Sddt5bvDgJttD4kP-3XMxzw=s128-c0x00000000-cc-rp-mo"
+      },
+      "publishTime": "2025-08-08T02:07:08.265804745Z"
+    },
+    {
+      "rating": 5,
+      "text": {
+        "text": "Awesome cleaning job everyone’s headlights will look spectacular if you book with this guy",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "Maya Patterson",
+        "uri": "https://www.google.com/maps/contrib/111081010509671289494/reviews",
+        "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjXWVUJZbeZzG_AfxH2c7-VIq9jiPaiRJHdc5lRIqXLV8nyBGw0=s128-c0x00000000-cc-rp-mo"
+      },
+      "publishTime": "2025-10-10T16:20:49.313812975Z"
+    },
+    {
+      "rating": 5,
+      "text": {
+        "text": "They did an amazing job cleaning my headlights, I’ve tried to do it myself before and I could never get as good as they did it. It was also amazing that they came to my house so I didn’t even have to go anywhere. Amazing service!",
+        "languageCode": "en"
+      },
+      "authorAttribution": {
+        "displayName": "shelby garner",
+        "uri": "https://www.google.com/maps/contrib/113051294234352080221/reviews",
+        "photoUri": "https://lh3.googleusercontent.com/a-/ALV-UjWOhsMUsxl8k5g8AGc8a6uh4NPDa-rgzqyL0GZeN46T1bZoXAOz=s128-c0x00000000-cc-rp-mo-ba2"
+      },
+      "publishTime": "2025-07-21T22:26:40.461176094Z"
     }
   ],
-  "cached_at": "2026-04-05T06:00:00Z"
+  "cached_at": "2026-04-05T10:52:13Z"
 }
