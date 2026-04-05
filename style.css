@@ -316,3 +316,98 @@ main { flex: 1; }
 .callout-card h2 { font-size: 1.4rem; color: #1e3a8a; margin-bottom: 0.5rem; }
 .callout-card p { font-size: 1.05rem; color: #374151; margin-bottom: 0.25rem; }
 .callout-card__sub { font-size: 0.9rem; color: #6b7280; margin-top: 0.5rem; }
+
+/* ── Card icons (benefit cards + process steps) ─────────────────── */
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  color: #2563eb;
+  font-size: 1.35rem;
+  margin-bottom: 0.9rem;
+  flex-shrink: 0;
+}
+.benefit-card { display: flex; flex-direction: column; }
+
+/* ── Mid-page CTA callout ────────────────────────────────────────── */
+.cta-mid {
+  max-width: 740px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  border-radius: 20px;
+  padding: 2.2rem 2.5rem;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 16px 48px rgba(30,58,138,0.28);
+}
+.cta-mid h2 { color: #fff; margin: 0 0 0.5rem; font-size: 1.6rem; }
+.cta-mid p { color: rgba(255,255,255,0.88); margin: 0 0 1.4rem; font-size: 1.05rem; }
+.cta-mid .btn--orange { box-shadow: 0 8px 28px rgba(249,115,22,0.45); }
+@media (max-width: 600px) {
+  .cta-mid { padding: 1.5rem 1.2rem; }
+  .cta-mid h2 { font-size: 1.3rem; }
+}
+
+/* ── Hero facts list with checkmarks ────────────────────────────── */
+.hero-facts {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem 1.4rem;
+}
+.hero-facts li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.97rem;
+  color: #374151;
+}
+.hero-facts li .fa-circle-check { color: #16a34a; font-size: 1rem; }
+
+/* ── Sticky desktop book button ─────────────────────────────────── */
+.desk-book-btn {
+  position: fixed;
+  top: 1.1rem;
+  right: 1.4rem;
+  z-index: 200;
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: translateY(-6px);
+}
+.desk-book-btn.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+@media (min-width: 721px) {
+  .desk-book-btn { display: block; }
+}
+
+/* ── About page CTA ─────────────────────────────────────────────── */
+.about-cta {
+  max-width: 580px;
+  margin: 2rem auto 0;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 2px solid #93c5fd;
+  border-radius: 20px;
+  padding: 2rem 2rem;
+  text-align: center;
+}
+.about-cta h2 { font-size: 1.4rem; color: #1e3a8a; margin: 0 0 0.5rem; }
+.about-cta p { color: #374151; margin: 0 0 1.2rem; }
+
+/* ── prefers-reduced-motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  body { animation: none; background: #e8eef8; }
+  .btn::after, .mobile-cta-bar__link::after { animation: none; }
+  * { transition-duration: 0.01ms !important; }
+}

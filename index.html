@@ -31,7 +31,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
  <style>
   /* Header background */
   body.home .header-bg-wrapper {
@@ -219,7 +219,7 @@
 </style>
 
 
-  <script src="site.js" defer></script>
+  <script src="site.js?v=2" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -326,6 +326,12 @@
 <body class="home">
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- Sticky desktop Book button — appears after hero scrolls out of view -->
+  <a href="book.html" class="btn btn--orange desk-book-btn" id="deskBookBtn" aria-label="Book an appointment">
+    <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+    <span>Book Now</span>
+  </a>
+
   <!-- Fixed header background image -->
   <div class="header-bg-wrapper" aria-hidden="true">
     <div class="header-bg-image"></div>
@@ -392,11 +398,11 @@
         </a>
       </div>
 
-        <ul class="list-plain">
-          <li><strong>Price:</strong> $150 per vehicle</li>
-          <li><strong>Warranty:</strong> 5-year satisfaction guarantee</li>
-          <li><strong>Note:</strong> Appointment only. We hand sand on site, so no power hookup is required.</li>
-          <li><strong>Kit:</strong> Headlight Magics system with ceramic UV sealant.</li>
+        <ul class="hero-facts">
+          <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span>$150 flat rate &mdash; no hidden fees</span></li>
+          <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span>5-year satisfaction guarantee</span></li>
+          <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span>We come to your driveway</span></li>
+          <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span>Done in under an hour</span></li>
         </ul>
         
     </div>
@@ -486,21 +492,38 @@
         </div>
         <div class="benefits-grid">
           <article class="benefit-card">
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-truck-fast"></i></div>
             <h3>Mobile &amp; Flexible</h3>
             <p>We come to your driveway or shop space anywhere in the Treasure Valley, keeping your day on track.</p>
           </article>
           <article class="benefit-card">
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
             <h3>5-Year Warranty</h3>
             <p>Premium UV protection seals the clarity in place. If it fades before five years, we make it right.</p>
           </article>
           <article class="benefit-card">
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-gem"></i></div>
             <h3>Crystal-Clear Finish</h3>
             <p>Multi-stage sanding and ceramic sealing eliminate haze, restore beam throw, and boost resale value.</p>
           </article>
           <article class="benefit-card">
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-clock"></i></div>
             <h3>Fast Turnaround</h3>
             <p>Most restorations are complete in under an hour so you can get back on the road with confidence.</p>
           </article>
+        </div>
+      </section>
+
+      <div class="section-divider" aria-hidden="true"></div>
+
+      <section class="section" aria-label="Book now callout">
+        <div class="cta-mid">
+          <h2>Ready for Brighter, Safer Headlights?</h2>
+          <p>$150 flat rate &middot; We come to you &middot; 5-year warranty included</p>
+          <a href="book.html" class="btn btn--orange">
+            <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+            <span>Book an Appointment</span>
+          </a>
         </div>
       </section>
 
@@ -513,18 +536,22 @@
         </div>
         <ol class="process-steps">
           <li>
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-calendar-check"></i></div>
             <h3>1. Book in Seconds</h3>
             <p>Choose a slot online or <a href="contact.html">request a custom time</a> and we&#8217;ll confirm within one business day.</p>
           </li>
           <li>
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-car"></i></div>
             <h3>2. We Come to You</h3>
             <p>We travel across the Treasure Valley. Hand sanding means no power hookup is necessary—just a safe spot to work.</p>
           </li>
           <li>
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-spray-can-sparkles"></i></div>
             <h3>3. Restore &amp; Seal</h3>
             <p>Multi-stage sanding removes oxidation, then the Headlight Magics UV sealant locks in clarity for years.</p>
           </li>
           <li>
+            <div class="card-icon" aria-hidden="true"><i class="fa-solid fa-road"></i></div>
             <h3>4. Care &amp; Drive</h3>
             <p>Headlights are road-ready in an hour, water-safe after two, and car-wash safe the next day.</p>
           </li>
@@ -609,6 +636,14 @@
           </details>
         </div>
         <p class="service-area-note" style="margin-top:1.2rem;">Still wondering about something else? <a href="contact.html">Reach out</a> and we&#8217;ll respond the same day.</p>
+
+        <div style="margin-top:2rem; text-align:center;">
+          <a href="book.html" class="btn btn--orange">
+            <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+            <span>Schedule Your Restoration</span>
+          </a>
+          <p style="margin:0.75rem 0 0; font-size:0.9rem; color:var(--muted);">Or <a href="sms:2086143414&body=Hi%2C%20I%20have%20a%20question%20about%20headlight%20restoration" style="color:var(--line); font-weight:600;">text us at 208-614-3414</a> for a quick answer.</p>
+        </div>
       </section>
 
       <div class="section-divider" aria-hidden="true"></div>

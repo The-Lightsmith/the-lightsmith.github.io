@@ -209,6 +209,23 @@
       .catch(() => null);
   }
 
+  // === Sticky desktop Book button ===
+  (function () {
+    var btn = document.getElementById('deskBookBtn');
+    if (!btn) return;
+    var hero = document.querySelector('.hero') || document.querySelector('.cta-row');
+    function onScroll() {
+      var threshold = hero ? hero.getBoundingClientRect().bottom + window.scrollY : 400;
+      if (window.scrollY > threshold) {
+        btn.classList.add('is-visible');
+      } else {
+        btn.classList.remove('is-visible');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
   document.addEventListener('DOMContentLoaded', function () {
     loadHeaderIfNeeded().then(function (nav) {
       if (!nav) return;
