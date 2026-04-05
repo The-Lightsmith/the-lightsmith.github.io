@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * *'   # Daily at 6 AM UTC
   workflow_dispatch:        # Allow manual trigger from GitHub Actions tab
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # Suppress Node.js 20 deprecation warning
+
 jobs:
   fetch-reviews:
     runs-on: ubuntu-latest
@@ -20,21 +23,24 @@ jobs:
         run: |
           PLACE_ID="ChIJw79roKw_kyURYlQvmTrI14o"
 
+          echo "=== Fetching from Places API ==="
           curl -s \
             -H "X-Goog-Api-Key: $API_KEY" \
             -H "X-Goog-FieldMask: reviews.authorAttribution,reviews.rating,reviews.text,reviews.publishTime" \
             "https://places.googleapis.com/v1/places/${PLACE_ID}" \
             -o reviews_raw.json
 
-          # Verify the response contains reviews before overwriting the cache
+          echo "=== Raw API response ==="
+          cat reviews_raw.json
+
+          echo "=== Checking for reviews field ==="
           if jq -e '.reviews | length > 0' reviews_raw.json > /dev/null 2>&1; then
             jq --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
               '{reviews: .reviews, cached_at: $ts}' \
               reviews_raw.json > reviews.json
             echo "Cached $(jq '.reviews | length' reviews.json) reviews."
           else
-            echo "Response did not contain reviews — keeping existing cache."
-            cat reviews_raw.json
+            echo "ERROR: Response did not contain reviews — keeping existing cache."
             exit 1
           fi
 
