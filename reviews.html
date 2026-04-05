@@ -337,24 +337,11 @@ if (Math.abs(userVelocity) < 0.001) userVelocity = 0;
       viewport.addEventListener('touchend', function() { lastTouchX = null; }, { passive: true });
     }
 
+    // Reviews are refreshed daily by a GitHub Action and stored in reviews.json.
+    // No live API call on page load.
     async function fetchReviews() {
-      const keyMeta = document.querySelector('meta[name="google-places-api-key"]');
-      const placeMeta = document.querySelector('meta[name="google-places-place-id"]');
-      const key = keyMeta ? keyMeta.content.trim() : '';
-      const place = placeMeta ? placeMeta.content.trim() : '';
-      if (!key || !place) {
-        console.warn('Google Places credentials missing. Falling back to sample reviews.');
-        return FALLBACK_REVIEWS;
-      }
-      const fieldMask = ['reviews.authorAttribution','reviews.rating','reviews.text','reviews.publishTime'].join(',');
-      const endpoint = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(place);
-      const res = await fetch(endpoint, {
-        headers: {
-          'X-Goog-Api-Key': key,
-          'X-Goog-FieldMask': fieldMask
-        }
-      });
-      if (!res.ok) throw new Error('Places API error ' + res.status);
+      const res = await fetch('/reviews.json');
+      if (!res.ok) throw new Error('Cache miss');
       const data = await res.json();
       const reviews = Array.isArray(data.reviews) ? data.reviews : [];
       reviews.forEach(function(r){ if (!r.createTime && r.publishTime) r.createTime = r.publishTime; });

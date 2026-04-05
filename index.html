@@ -552,16 +552,12 @@
         </ul>
         <p class="service-area-note">Need headlight restoration outside these cities? <a href="contact.html">Send a quick note</a> and we&#8217;ll see if we can help.</p>
         <div class="service-area-map">
-          <iframe
-            src="https://maps.google.com/maps?ll=43.62,-116.48&z=10&t=m&output=embed"
-            width="100%"
-            height="380"
-            style="border:0; display:block;"
-            allowfullscreen=""
+          <img
+            src="service-area-map.png"
+            alt="Map of The Lightsmith service area covering Caldwell, Nampa, Meridian, Boise, Eagle, Kuna, Star, Middleton, Emmett, and Fruitland in the Treasure Valley, Idaho"
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="The Lightsmith service area — Treasure Valley, Idaho"
-          ></iframe>
+            style="display:block; width:100%; border-radius:var(--radius, 8px);"
+          >
         </div>
       </section>
 
@@ -650,12 +646,6 @@
         }
       ];
 
-      const keyMeta = document.querySelector('meta[name="google-places-api-key"]');
-      const placeMeta = document.querySelector('meta[name="google-places-place-id"]');
-
-      const apiKey = keyMeta ? keyMeta.content.trim() : '';
-      const placeId = placeMeta ? placeMeta.content.trim() : '';
-
       const render = (reviews) => {
         if (!reviews.length) {
           container.innerHTML = '<p class="muted">Reviews are loading soon. Check back in a moment.</p>';
@@ -669,21 +659,12 @@
         }).join('');
       };
 
+      // Reviews are refreshed daily by a GitHub Action and stored in reviews.json.
+      // No live API call on page load.
       async function fetchTopReviews() {
-        if (!apiKey || !placeId) {
-          render(fallback);
-          return;
-        }
         try {
-          const fieldMask = ['reviews.authorAttribution','reviews.rating','reviews.text','reviews.publishTime'].join(',');
-          const endpoint = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(placeId);
-          const response = await fetch(endpoint, {
-            headers: {
-              'X-Goog-Api-Key': apiKey,
-              'X-Goog-FieldMask': fieldMask
-            }
-          });
-          if (!response.ok) throw new Error('Places API error ' + response.status);
+          const response = await fetch('/reviews.json');
+          if (!response.ok) throw new Error('Cache miss');
           const data = await response.json();
           const list = Array.isArray(data.reviews) ? data.reviews : [];
           const prepared = list
@@ -695,7 +676,7 @@
             });
           render(prepared.length ? prepared : fallback);
         } catch (error) {
-          console.warn('Unable to fetch reviews for homepage testimonials:', error.message || error);
+          console.warn('Unable to load cached reviews:', error.message || error);
           render(fallback);
         }
       }
