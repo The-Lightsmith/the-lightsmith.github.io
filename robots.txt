@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://lightsmith.llc/sitemap.xml
+LLMs: https://lightsmith.llc/llms.txt
