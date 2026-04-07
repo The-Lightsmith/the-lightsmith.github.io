@@ -225,7 +225,7 @@
     "@context": "https://schema.org",
     "@type": "AutoDetailing",
     "name": "The Lightsmith",
-    "image": "https://lightsmith.llc/logo.png",
+    "image": "https://lightsmith.llc/the-lightsmith-logo.png",
     "url": "https://lightsmith.llc/",
     "telephone": "+1-208-614-3414",
     "description": "Mobile headlight restoration serving the Treasure Valley with a five-year warranty.",
@@ -238,7 +238,56 @@
       "postalCode": "83607",
       "addressCountry": "US"
     },
-    "areaServed": [{"@type": "Place", "name": "Treasure Valley"}],
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 43.6629,
+      "longitude": -116.6874
+    },
+    "areaServed": [
+      {"@type": "City", "name": "Caldwell", "addressRegion": "ID"},
+      {"@type": "City", "name": "Nampa", "addressRegion": "ID"},
+      {"@type": "City", "name": "Meridian", "addressRegion": "ID"},
+      {"@type": "City", "name": "Boise", "addressRegion": "ID"},
+      {"@type": "City", "name": "Eagle", "addressRegion": "ID"},
+      {"@type": "City", "name": "Star", "addressRegion": "ID"},
+      {"@type": "City", "name": "Middleton", "addressRegion": "ID"},
+      {"@type": "City", "name": "Kuna", "addressRegion": "ID"},
+      {"@type": "City", "name": "Emmett", "addressRegion": "ID"},
+      {"@type": "City", "name": "Fruitland", "addressRegion": "ID"}
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Headlight Restoration Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Single Vehicle Headlight Restoration",
+            "description": "Multi-stage sanding, polishing, and ceramic UV sealing. Road-ready in under one hour."
+          },
+          "price": "150",
+          "priceCurrency": "USD"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Second Vehicle Add-On",
+            "description": "Add a second vehicle at the same appointment."
+          },
+          "price": "100",
+          "priceCurrency": "USD"
+        }
+      ]
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "13",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
     "serviceType": "Headlight Restoration",
     "sameAs": [
       "https://www.instagram.com/the_lightsmith_restoration/",
