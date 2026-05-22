@@ -5,9 +5,9 @@
 const VENDOR_RULES = [
   { test: /FACEBK|FACEBOOK/i,              clean: 'Facebook Ads',      cat: 'Advertising & Marketing' },
   { test: /GOOGLE\s?\*CLOUD|GOOGLE\*CLOUD/i, clean: 'Google Ads',      cat: 'Advertising & Marketing' },
-  { test: /GOOGLE\s?\*Workspace/i,          clean: 'Google Workspace', cat: 'Tools & Equipment' },
+  { test: /GOOGLE\s?\*Workspace/i,          clean: 'Google Workspace', cat: 'Software & Subscriptions' },
   { test: /GOOGLE\s?\*ADS|GOOGLEADS/i,      clean: 'Google Ads',       cat: 'Advertising & Marketing' },
-  { test: /CLAUDE/i,                        clean: 'Claude AI',         cat: 'Advertising & Marketing' },
+  { test: /CLAUDE/i,                        clean: 'Claude AI',         cat: 'Software & Subscriptions' },
   { test: /WALMART/i,                       clean: 'Walmart',           cat: 'Supplies & Materials' },
   { test: /AUTOZONE|O'?REILLY|NAPA/i,       clean: null,                cat: 'Supplies & Materials' },
   { test: /AMAZON/i,                        clean: 'Amazon',            cat: 'Supplies & Materials' },

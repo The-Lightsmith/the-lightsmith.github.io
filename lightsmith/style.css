@@ -670,7 +670,6 @@ input[type="date"] { font-family: 'DM Mono', monospace; font-size: 15px; }
     top: 0;
     bottom: auto;
     height: 52px;
-    order: -1; /* place above main on desktop */
     flex-direction: row;
     border-bottom: 1px solid var(--border);
     border-top: none;

@@ -33,6 +33,27 @@
       <button class="link-btn" id="banner-connect-btn">tap here to connect</button>
     </div>
 
+    <!-- Bottom tab bar — placed here (before #main) so desktop sticky layout is
+         header → nav → main without any CSS order hacks -->
+    <nav id="tab-bar">
+      <button class="tab-btn active" data-tab="job">
+        <span class="tab-icon">🔧</span>
+        <span>Job</span>
+      </button>
+      <button class="tab-btn" data-tab="import">
+        <span class="tab-icon">📄</span>
+        <span>Import</span>
+      </button>
+      <button class="tab-btn" data-tab="recurring">
+        <span class="tab-icon">🔁</span>
+        <span>Recurring</span>
+      </button>
+      <button class="tab-btn" data-tab="dashboard">
+        <span class="tab-icon">📊</span>
+        <span>Dashboard</span>
+      </button>
+    </nav>
+
     <!-- Tab content -->
     <main id="main">
 
@@ -212,26 +233,6 @@
       </section>
 
     </main>
-
-    <!-- Bottom tab bar -->
-    <nav id="tab-bar">
-      <button class="tab-btn active" data-tab="job">
-        <span class="tab-icon">🔧</span>
-        <span>Job</span>
-      </button>
-      <button class="tab-btn" data-tab="import">
-        <span class="tab-icon">📄</span>
-        <span>Import</span>
-      </button>
-      <button class="tab-btn" data-tab="recurring">
-        <span class="tab-icon">🔁</span>
-        <span>Recurring</span>
-      </button>
-      <button class="tab-btn" data-tab="dashboard">
-        <span class="tab-icon">📊</span>
-        <span>Dashboard</span>
-      </button>
-    </nav>
 
     <!-- Toast notification -->
     <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>

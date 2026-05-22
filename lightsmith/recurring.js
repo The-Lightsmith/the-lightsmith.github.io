@@ -4,8 +4,8 @@ const STORAGE_KEY = 'ls_recurring_entries';
 const LAST_MONTH_KEY = 'ls_last_recurring_month';
 
 const DEFAULT_ENTRIES = [
-  { id: 'gws',    desc: 'Google Workspace',   amount: 9.03,  cat: 'Tools & Equipment',      payment: 'Bluevine Checking 5066 (Business)', on: true },
-  { id: 'claude', desc: 'Claude for website', amount: 20.00, cat: 'Advertising & Marketing', payment: 'Bluevine Checking 5066 (Business)', on: true },
+  { id: 'gws',    desc: 'Google Workspace',   amount: 9.03,  cat: 'Software & Subscriptions', payment: 'Bluevine Checking 5066 (Business)', on: true },
+  { id: 'claude', desc: 'Claude for website', amount: 20.00, cat: 'Software & Subscriptions', payment: 'Bluevine Checking 5066 (Business)', on: true },
   { id: 'gads',   desc: 'Google Ads',         amount: 10.00, cat: 'Advertising & Marketing', payment: 'Bluevine Checking 5066 (Business)', on: true },
 ];
 

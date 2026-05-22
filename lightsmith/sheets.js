@@ -114,7 +114,7 @@ export function disconnect() {
 
 export async function appendRows(rows) {
   const token = getToken();
-  if (!token) throw new Error('NOT_AUTH');
+  if (!token) throw new Error('AUTH_EXPIRED');
 
   const range = encodeURIComponent(`${CONFIG.SHEET_NAME}!A:H`);
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${range}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;

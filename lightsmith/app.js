@@ -395,7 +395,8 @@ async function boot() {
   // Handle OAuth callback
   if (window.location.search.includes('code=')) {
     try {
-      await handleOAuthCallback();
+      const ok = await handleOAuthCallback();
+      if (!ok) showToast('Auth failed — try connecting again', 'error');
     } catch {
       showToast('Auth failed — try connecting again', 'error');
     }
