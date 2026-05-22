@@ -7,7 +7,7 @@ export const CONFIG = {
   // Create this in Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client IDs
   OAUTH_CLIENT_ID: '524160798873-7d4k2qk06hn8an20svv5k483ncb7imfo.apps.googleusercontent.com',
 
-  REDIRECT_URI: 'https://the-lightsmith.github.io/lightsmith/',
+  REDIRECT_URI: 'https://www.lightsmith.llc/lightsmith/',
 
   SHEET_NAME: 'Transactions',
 };
