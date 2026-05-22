@@ -24,13 +24,11 @@
           <span class="subtext">Business Toolkit</span>
         </div>
       </div>
-      <button id="auth-btn" class="auth-btn">Connect Sheets</button>
     </header>
 
-    <!-- Not connected banner -->
+    <!-- Setup banner — only shows if SCRIPT_URL isn't configured -->
     <div id="not-connected-banner" class="banner warning hidden">
-      Not connected to Google Sheets —
-      <button class="link-btn" id="banner-connect-btn">tap here to connect</button>
+      Script URL not configured — open config.js and paste your Apps Script URL.
     </div>
 
     <!-- Bottom tab bar — placed here (before #main) so desktop sticky layout is
@@ -115,10 +113,7 @@
             <textarea id="job-notes" placeholder="Any notes about the job…"></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary requires-auth">Add to Sheet</button>
-          <p class="no-auth-msg muted" style="text-align:center;margin-top:12px">
-            Connect Google Sheets above to log jobs
-          </p>
+          <button type="submit" class="btn btn-primary">Add to Sheet</button>
         </form>
       </section>
 
@@ -136,10 +131,7 @@
         <p id="import-status"></p>
         <div id="review-area"></div>
 
-        <button id="import-btn" class="btn btn-primary hidden requires-auth">Import rows →</button>
-        <p class="no-auth-msg muted" style="text-align:center;margin-top:12px">
-          Connect Google Sheets above to import transactions
-        </p>
+        <button id="import-btn" class="btn btn-primary hidden">Import rows →</button>
       </section>
 
       <!-- ── Tab 3: Recurring Entries ──────────────────────────────────────── -->
@@ -194,12 +186,9 @@
 
         <div class="spacer"></div>
 
-        <button id="recurring-big-btn" class="btn btn-big requires-auth">
+        <button id="recurring-big-btn" class="btn btn-big">
           Add this month's entries →
         </button>
-        <p class="no-auth-msg muted" style="text-align:center;margin-top:12px">
-          Connect Google Sheets above to add recurring entries
-        </p>
       </section>
 
       <!-- ── Tab 4: Dashboard ───────────────────────────────────────────────── -->
@@ -238,9 +227,6 @@
     <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   </div><!-- /#app -->
-
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async></script>
 
   <!-- PDF.js from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>

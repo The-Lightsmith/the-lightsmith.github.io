@@ -1,13 +1,9 @@
-// config.js — fill in your values before deploying
-// See README.md for step-by-step instructions
+// config.js — paste your Apps Script deployment URL below
+// Deploy from: script.google.com → Deploy → New deployment → Web app
+// Execute as: Me | Who has access: Anyone
 
 export const CONFIG = {
-  SHEET_ID: '1Fv4yg5GQBi95V5klnG1nNE9vfWy3y8NlOcEmidE-sLg',
-
-  // Create this in Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client IDs
-  OAUTH_CLIENT_ID: '524160798873-7d4k2qk06hn8an20svv5k483ncb7imfo.apps.googleusercontent.com',
-
-  REDIRECT_URI: 'https://www.lightsmith.llc/lightsmith/',
-
+  SHEET_ID:   '1Fv4yg5GQBi95V5klnG1nNE9vfWy3y8NlOcEmidE-sLg',
+  SCRIPT_URL: 'PASTE_SCRIPT_URL_HERE',
   SHEET_NAME: 'Transactions',
 };

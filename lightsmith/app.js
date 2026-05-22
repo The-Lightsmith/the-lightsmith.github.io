@@ -1,10 +1,6 @@
 // app.js — main app logic, tab switching, auth state, session tracking
 import { CONFIG } from './config.js';
-import {
-  startOAuthFlow,
-  isConnected, disconnect,
-  appendRows, getYTDTotals,
-} from './sheets.js';
+import { isConnected, appendRows, getYTDTotals } from './sheets.js';
 import { parsePDF, buildReviewTable, toSheetRows as importToRows } from './importer.js';
 import {
   loadEntries, saveEntries, renderEntries,
@@ -28,30 +24,14 @@ function showToast(msg, type = 'success') {
   toastTimer = setTimeout(() => { el.className = 'toast hidden'; }, 2500);
 }
 
-// ── Auth UI ────────────────────────────────────────────────────────────────────
+// ── Setup check ────────────────────────────────────────────────────────────────
 
 function updateAuthUI() {
-  const connected = isConnected();
-  const btn = document.getElementById('auth-btn');
+  const ready = isConnected();
   const banner = document.getElementById('not-connected-banner');
-
-  if (connected) {
-    btn.textContent = 'Disconnect';
-    btn.classList.add('connected');
-    banner.classList.add('hidden');
-  } else {
-    btn.textContent = 'Connect Sheets';
-    btn.classList.remove('connected');
-    banner.classList.remove('hidden');
-  }
-
-  // Hide/show submit buttons based on connection
-  document.querySelectorAll('.requires-auth').forEach(el => {
-    el.style.display = connected ? '' : 'none';
-  });
-  document.querySelectorAll('.no-auth-msg').forEach(el => {
-    el.style.display = connected ? 'none' : '';
-  });
+  if (banner) banner.classList.toggle('hidden', ready);
+  document.querySelectorAll('.requires-auth').forEach(el => { el.style.display = ready ? '' : 'none'; });
+  document.querySelectorAll('.no-auth-msg').forEach(el => { el.style.display = ready ? 'none' : ''; });
 }
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
@@ -141,8 +121,7 @@ function initJobTab() {
       dateInput.value = new Date().toISOString().split('T')[0];
       venmoFeeRow.classList.add('hidden');
     } catch (err) {
-      if (err.message === 'AUTH_EXPIRED') { updateAuthUI(); showToast('Session expired — reconnect', 'error'); }
-      else showToast(`Error: ${err.message}`, 'error');
+      showToast(`Error: ${err.message}`, 'error');
     } finally {
       btn.disabled = false;
       btn.textContent = 'Add to Sheet';
@@ -197,8 +176,7 @@ function initImportTab() {
       statusMsg.textContent = '';
       fileInput.value = '';
     } catch (err) {
-      if (err.message === 'AUTH_EXPIRED') { updateAuthUI(); showToast('Session expired — reconnect', 'error'); }
-      else showToast(`Error: ${err.message}`, 'error');
+      showToast(`Error: ${err.message}`, 'error');
       importBtn.disabled = false;
       importBtn.textContent = `Import ${rows.length} rows →`;
     }
@@ -306,8 +284,7 @@ function initRecurringTab() {
       showToast(`${rows.length} entries added for ${monthLabel()} ✓`);
       updateRecurringButton();
     } catch (err) {
-      if (err.message === 'AUTH_EXPIRED') { updateAuthUI(); showToast('Session expired — reconnect', 'error'); }
-      else showToast(`Error: ${err.message}`, 'error');
+      showToast(`Error: ${err.message}`, 'error');
     } finally {
       bigBtn.disabled = false;
       updateRecurringButton();
@@ -391,42 +368,11 @@ function escHtml(str) {
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
-async function triggerConnect() {
-  const btn = document.getElementById('auth-btn');
-  btn.disabled = true;
-  btn.textContent = 'Connecting…';
-  try {
-    const { ok } = await startOAuthFlow();
-    if (ok) {
-      showToast('Connected to Google Sheets ✓');
-    } else {
-      showToast('Connection cancelled or failed', 'error');
-    }
-  } catch {
-    showToast('Connection failed — try again', 'error');
-  }
-  updateAuthUI();
-}
-
 async function boot() {
   // Wire nav tabs
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
-
-  // Auth button
-  document.getElementById('auth-btn').addEventListener('click', async () => {
-    if (isConnected()) {
-      disconnect();
-      updateAuthUI();
-      showToast('Disconnected');
-    } else {
-      await triggerConnect();
-    }
-  });
-
-  // Banner connect button
-  document.getElementById('banner-connect-btn').addEventListener('click', () => triggerConnect());
 
   // Init tabs
   initJobTab();
