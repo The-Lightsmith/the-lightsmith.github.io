@@ -4,12 +4,16 @@
 import { CONFIG } from './config.js';
 
 export async function appendRows(rows) {
-  // no-cors: browser can't verify the response but the script still runs and writes the data
-  await fetch(CONFIG.SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: JSON.stringify({ action: 'append', rows }),
-  });
+  if (!rows.length) return;
+  try {
+    await fetch(CONFIG.SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ action: 'append', rows }),
+    });
+  } catch {
+    throw new Error('Network error — check your connection and try again');
+  }
 }
 
 export async function getYTDTotals() {

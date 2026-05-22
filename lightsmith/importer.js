@@ -123,7 +123,7 @@ export function buildReviewTable(transactions, container) {
     .map(
       (tx, i) => `
     <tr data-index="${i}" class="${tx.skip ? 'skipped' : ''}">
-      <td class="mono">${tx.date}</td>
+      <td class="mono">${escHtml(tx.date)}</td>
       <td>${escHtml(tx.description)}</td>
       <td class="mono amount">$${tx.amount.toFixed(2)}</td>
       <td>

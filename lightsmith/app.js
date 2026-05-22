@@ -88,19 +88,26 @@ function initJobTab() {
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
-    if (!isConnected()) { showToast('Connect Google Sheets first', 'error'); return; }
+    if (!isConnected()) { showToast('Script URL not configured — check config.js', 'error'); return; }
 
     const rawDate = dateInput.value; // YYYY-MM-DD
     const [yyyy, mm, dd] = rawDate.split('-');
     const date = `${mm}/${dd}/${yyyy}`;
 
     const service = document.getElementById('job-service').value;
-    const vehicle = document.getElementById('job-vehicle').value.trim();
+    const vehicle = document.getElementById('job-vehicle').value.trim().slice(0, 100);
     const amount = parseFloat(document.getElementById('job-amount').value);
     const payment = paymentSel.value;
-    const customer = document.getElementById('job-customer').value.trim();
-    const notes = document.getElementById('job-notes').value.trim();
+    const customer = document.getElementById('job-customer').value.trim().slice(0, 100);
+    const notes = document.getElementById('job-notes').value.trim().slice(0, 500);
     const venmoFee = document.getElementById('venmo-fee-check').checked && payment === 'Venmo';
+
+    if (!amount || amount <= 0 || !isFinite(amount)) {
+      showToast('Enter a valid amount', 'error'); return;
+    }
+    if (amount > 100000) {
+      showToast('Amount looks too large — double-check it', 'error'); return;
+    }
 
     const notesCell = [customer, notes].filter(Boolean).join(' | ');
     const description = vehicle ? `${service} – ${vehicle}` : service;
@@ -163,7 +170,7 @@ function initImportTab() {
   });
 
   importBtn.addEventListener('click', async () => {
-    if (!isConnected()) { showToast('Connect Google Sheets first', 'error'); return; }
+    if (!isConnected()) { showToast('Script URL not configured — check config.js', 'error'); return; }
 
     const rows = importToRows(parsedTransactions);
     if (rows.length === 0) { showToast('Nothing to import', 'error'); return; }
@@ -211,7 +218,7 @@ async function processPDF(file) {
     importBtn.classList.remove('hidden');
     statusMsg.textContent = `Found ${parsedTransactions.length} transaction${parsedTransactions.length !== 1 ? 's' : ''}`;
   } catch (err) {
-    reviewArea.innerHTML = `<p class="empty-msg error">Error parsing PDF: ${err.message}</p>`;
+    reviewArea.innerHTML = `<p class="empty-msg error">Error parsing PDF: ${escHtml(err.message)}</p>`;
   }
 }
 
@@ -266,7 +273,7 @@ function initRecurringTab() {
 
   // Big button
   bigBtn.addEventListener('click', async () => {
-    if (!isConnected()) { showToast('Connect Google Sheets first', 'error'); return; }
+    if (!isConnected()) { showToast('Script URL not configured — check config.js', 'error'); return; }
 
     const lastMonth = getLastRunMonth();
     const thisMonth = currentMonthKey();
@@ -337,7 +344,7 @@ async function refreshDashboard() {
   // YTD totals
   const ytdEl = document.getElementById('ytd-totals');
   if (!isConnected()) {
-    ytdEl.innerHTML = '<p class="muted">Connect to Google Sheets to see year-to-date totals.</p>';
+    ytdEl.innerHTML = '<p class="muted">Configure SCRIPT_URL in config.js to see year-to-date totals.</p>';
     return;
   }
 
