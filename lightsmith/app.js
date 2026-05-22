@@ -68,13 +68,18 @@ function initJobTab() {
   const dateInput = document.getElementById('job-date');
   dateInput.value = new Date().toISOString().split('T')[0]; // YYYY-MM-DD for input[type=date]
 
+  const venmoFeeCheck = document.getElementById('venmo-fee-check');
+
   function updateVenmoFee() {
     const isVenmo = paymentSel.value === 'Venmo';
     venmoFeeRow.classList.toggle('hidden', !isVenmo);
     if (isVenmo) {
+      venmoFeeCheck.checked = true;
       const amt = parseFloat(amountInput.value) || 0;
       const fee = +(amt * 0.019 + 0.10).toFixed(2);
-      venmoFeePreview.textContent = `Fee: $${fee.toFixed(2)}`;
+      venmoFeePreview.textContent = `–$${fee.toFixed(2)}`;
+    } else {
+      venmoFeeCheck.checked = false;
     }
   }
 
