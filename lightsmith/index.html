@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>Lightsmith Business Toolkit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Header -->
+    <header id="header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <div class="logo-text">
+          <span class="wordmark">The Lightsmith</span>
+          <span class="subtext">Business Toolkit</span>
+        </div>
+      </div>
+      <button id="auth-btn" class="auth-btn">Connect Sheets</button>
+    </header>
+
+    <!-- Not connected banner -->
+    <div id="not-connected-banner" class="banner warning hidden">
+      Not connected to Google Sheets —
+      <button class="link-btn" id="banner-connect-btn">tap here to connect</button>
+    </div>
+
+    <!-- Tab content -->
+    <main id="main">
+
+      <!-- ── Tab 1: Job Logger ──────────────────────────────────────────── -->
+      <section id="tab-job" class="tab-panel active">
+        <h1 class="page-title">Log a Job</h1>
+
+        <form id="job-form" novalidate>
+          <div class="form-group">
+            <label for="job-date">Date</label>
+            <input type="date" id="job-date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="job-service">Service Type</label>
+            <select id="job-service" required>
+              <option value="Headlight Restoration">Headlight Restoration</option>
+              <option value="Headlight Replacement">Headlight Replacement</option>
+              <option value="Headlight Tint">Headlight Tint</option>
+              <option value="Other Service">Other Service</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="job-vehicle">Vehicle</label>
+            <input type="text" id="job-vehicle" placeholder="e.g. Chevy Silverado">
+          </div>
+
+          <div class="form-group">
+            <label for="job-amount">Amount Charged ($)</label>
+            <input type="number" id="job-amount" placeholder="0.00" min="0" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label for="job-payment">Payment Method</label>
+            <select id="job-payment" required>
+              <option value="Venmo">Venmo</option>
+              <option value="Cash">Cash</option>
+              <option value="Zelle">Zelle</option>
+              <option value="Square">Square</option>
+              <option value="Check">Check</option>
+              <option value="Bluevine Checking 5066 (Business)">Bluevine Checking 5066 (Business)</option>
+            </select>
+          </div>
+
+          <div id="venmo-fee-row" class="checkbox-row hidden">
+            <input type="checkbox" id="venmo-fee-check">
+            <label for="venmo-fee-check">Auto-deduct Venmo fee (1.9% + $0.10)</label>
+            <span id="venmo-fee-preview" class="fee-preview"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="job-customer">Customer Name <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input type="text" id="job-customer" placeholder="John Smith">
+          </div>
+
+          <div class="form-group">
+            <label for="job-notes">Notes <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <textarea id="job-notes" placeholder="Any notes about the job…"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary requires-auth">Add to Sheet</button>
+          <p class="no-auth-msg muted" style="text-align:center;margin-top:12px">
+            Connect Google Sheets above to log jobs
+          </p>
+        </form>
+      </section>
+
+      <!-- ── Tab 2: Statement Importer ────────────────────────────────────── -->
+      <section id="tab-import" class="tab-panel">
+        <h1 class="page-title">Import Statement</h1>
+
+        <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Upload Bluevine PDF">
+          <div class="drop-zone-icon">📄</div>
+          <p class="drop-zone-text">Drop your Bluevine PDF here</p>
+          <p class="drop-zone-hint">or tap to choose a file</p>
+        </div>
+        <input type="file" id="pdf-input" accept="application/pdf" style="display:none" aria-hidden="true">
+
+        <p id="import-status"></p>
+        <div id="review-area"></div>
+
+        <button id="import-btn" class="btn btn-primary hidden requires-auth">Import rows →</button>
+        <p class="no-auth-msg muted" style="text-align:center;margin-top:12px">
+          Connect Google Sheets above to import transactions
+        </p>
+      </section>
+
+      <!-- ── Tab 3: Recurring Entries ──────────────────────────────────────── -->
+      <section id="tab-recurring" class="tab-panel">
+        <h1 class="page-title">Recurring Entries</h1>
+
+        <div id="recurring-list"></div>
+
+        <button id="recurring-add-btn" class="btn btn-secondary mb-16">+ Add custom entry</button>
+
+        <form id="recurring-add-form" class="add-entry-form hidden" novalidate>
+          <h3>New recurring entry</h3>
+
+          <div class="form-group">
+            <label for="new-desc">Description</label>
+            <input type="text" id="new-desc" placeholder="e.g. Quickbooks" required>
+          </div>
+
+          <div class="form-group">
+            <label for="new-amount">Monthly Amount ($)</label>
+            <input type="number" id="new-amount" placeholder="0.00" min="0" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label for="new-cat">Category</label>
+            <select id="new-cat">
+              <option value="Advertising &amp; Marketing">Advertising &amp; Marketing</option>
+              <option value="Gas &amp; Fuel">Gas &amp; Fuel</option>
+              <option value="Insurance">Insurance</option>
+              <option value="Other Expenses">Other Expenses</option>
+              <option value="Payment Processing Fees">Payment Processing Fees</option>
+              <option value="Software &amp; Subscriptions">Software &amp; Subscriptions</option>
+              <option value="Supplies &amp; Materials">Supplies &amp; Materials</option>
+              <option value="Tools &amp; Equipment" selected>Tools &amp; Equipment</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="new-payment">Payment Method</label>
+            <select id="new-payment">
+              <option value="Bluevine Checking 5066 (Business)">Bluevine Checking 5066 (Business)</option>
+              <option value="Venmo">Venmo</option>
+              <option value="Cash">Cash</option>
+              <option value="Zelle">Zelle</option>
+              <option value="Square">Square</option>
+              <option value="Check">Check</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add Entry</button>
+        </form>
+
+        <div class="spacer"></div>
+
+        <button id="recurring-big-btn" class="btn btn-big requires-auth">
+          Add this month's entries →
+        </button>
+        <p class="no-auth-msg muted" style="text-align:center;margin-top:12px">
+          Connect Google Sheets above to add recurring entries
+        </p>
+      </section>
+
+      <!-- ── Tab 4: Dashboard ───────────────────────────────────────────────── -->
+      <section id="tab-dashboard" class="tab-panel">
+        <h1 class="page-title">Dashboard</h1>
+
+        <h3 class="section-label">This Session</h3>
+        <div class="summary-grid" style="margin-bottom:16px">
+          <div class="summary-card">
+            <span class="summary-label">Income</span>
+            <span class="summary-value green" id="session-income">$0.00</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Expenses</span>
+            <span class="summary-value red" id="session-expenses">$0.00</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Net</span>
+            <span class="summary-value" id="session-net">$0.00</span>
+          </div>
+        </div>
+
+        <h3 class="section-label">Rows Added This Session</h3>
+        <div id="session-rows" style="margin-bottom:20px">
+          <p class="empty-msg">No rows added this session.</p>
+        </div>
+
+        <div id="ytd-totals">
+          <p class="muted">Connect to Google Sheets to see year-to-date totals.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom tab bar -->
+    <nav id="tab-bar">
+      <button class="tab-btn active" data-tab="job">
+        <span class="tab-icon">🔧</span>
+        <span>Job</span>
+      </button>
+      <button class="tab-btn" data-tab="import">
+        <span class="tab-icon">📄</span>
+        <span>Import</span>
+      </button>
+      <button class="tab-btn" data-tab="recurring">
+        <span class="tab-icon">🔁</span>
+        <span>Recurring</span>
+      </button>
+      <button class="tab-btn" data-tab="dashboard">
+        <span class="tab-icon">📊</span>
+        <span>Dashboard</span>
+      </button>
+    </nav>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  </div><!-- /#app -->
+
+  <!-- PDF.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // Set PDF.js worker before modules load
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
