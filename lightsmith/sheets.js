@@ -1,30 +1,29 @@
-// sheets.js — Google Sheets via Apps Script proxy (no OAuth needed)
+// sheets.js — Google Sheets via Apps Script proxy
+// Writes: no-cors POST (server processes it; browser can't read response — that's fine)
+// Reads:  GET with action param (CORS works cleanly for GET)
 import { CONFIG } from './config.js';
 
-async function call(action, extra = {}) {
-  const res = await fetch(CONFIG.SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify({ action, ...extra }),
-  });
-  if (!res.ok) throw new Error(`Script error ${res.status}`);
-  const data = await res.json();
-  if (!data.ok) throw new Error(data.error || 'Script returned error');
-  return data;
-}
-
 export async function appendRows(rows) {
-  await call('append', { rows });
+  // no-cors: browser can't verify the response but the script still runs and writes the data
+  await fetch(CONFIG.SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify({ action: 'append', rows }),
+  });
 }
 
 export async function getYTDTotals() {
   try {
-    const data = await call('ytd');
-    return { income: data.income, expenses: data.expenses, net: data.net };
+    const res = await fetch(`${CONFIG.SCRIPT_URL}?action=ytd`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.ok ? { income: data.income, expenses: data.expenses, net: data.net } : null;
   } catch {
     return null;
   }
 }
 
-// Kept so nothing else breaks — no-ops now that there's no auth
-export function isConnected() { return !!CONFIG.SCRIPT_URL && CONFIG.SCRIPT_URL !== 'PASTE_SCRIPT_URL_HERE'; }
+export function isConnected() {
+  return !!CONFIG.SCRIPT_URL && CONFIG.SCRIPT_URL !== 'PASTE_SCRIPT_URL_HERE';
+}
 export function disconnect() {}
