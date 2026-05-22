@@ -1,7 +1,7 @@
 // app.js — main app logic, tab switching, auth state, session tracking
 import { CONFIG } from './config.js';
 import {
-  startOAuthFlow, handleOAuthCallback,
+  startOAuthFlow,
   isConnected, disconnect,
   appendRows, getYTDTotals,
 } from './sheets.js';
@@ -391,35 +391,42 @@ function escHtml(str) {
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 
-async function boot() {
-  // Handle OAuth callback
-  if (window.location.search.includes('code=')) {
-    try {
-      const ok = await handleOAuthCallback();
-      if (!ok) showToast('Auth failed — try connecting again', 'error');
-    } catch {
-      showToast('Auth failed — try connecting again', 'error');
+async function triggerConnect() {
+  const btn = document.getElementById('auth-btn');
+  btn.disabled = true;
+  btn.textContent = 'Connecting…';
+  try {
+    const { ok } = await startOAuthFlow();
+    if (ok) {
+      showToast('Connected to Google Sheets ✓');
+    } else {
+      showToast('Connection cancelled or failed', 'error');
     }
+  } catch {
+    showToast('Connection failed — try again', 'error');
   }
+  updateAuthUI();
+}
 
+async function boot() {
   // Wire nav tabs
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
 
   // Auth button
-  document.getElementById('auth-btn').addEventListener('click', () => {
+  document.getElementById('auth-btn').addEventListener('click', async () => {
     if (isConnected()) {
       disconnect();
       updateAuthUI();
       showToast('Disconnected');
     } else {
-      startOAuthFlow();
+      await triggerConnect();
     }
   });
 
   // Banner connect button
-  document.getElementById('banner-connect-btn').addEventListener('click', () => startOAuthFlow());
+  document.getElementById('banner-connect-btn').addEventListener('click', () => triggerConnect());
 
   // Init tabs
   initJobTab();

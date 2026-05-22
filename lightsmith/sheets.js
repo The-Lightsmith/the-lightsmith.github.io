@@ -1,91 +1,44 @@
-// sheets.js — Google Sheets OAuth PKCE + API read/write
+// sheets.js — Google Sheets via GIS Token Client + Sheets REST API
 import { CONFIG } from './config.js';
 
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
 const TOKEN_KEY = 'ls_gsheet_token';
 
-// ── PKCE helpers ──────────────────────────────────────────────────────────────
+// ── GIS Token Client ──────────────────────────────────────────────────────────
 
-function generateVerifier(length = 64) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  const buf = new Uint8Array(length);
-  crypto.getRandomValues(buf);
-  return Array.from(buf, b => chars[b % chars.length]).join('');
-}
+let _tokenClient = null;
+let _resolveAuth = null;
 
-async function sha256(plain) {
-  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(plain));
-}
-
-function base64url(buffer) {
-  const bytes = new Uint8Array(buffer);
-  let str = '';
-  bytes.forEach(b => (str += String.fromCharCode(b)));
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-}
-
-// ── OAuth flow ─────────────────────────────────────────────────────────────────
-
-export async function startOAuthFlow() {
-  const verifier = generateVerifier();
-  const challenge = base64url(await sha256(verifier));
-  sessionStorage.setItem('ls_pkce_verifier', verifier);
-
-  const params = new URLSearchParams({
+function initTokenClient() {
+  if (_tokenClient) return _tokenClient;
+  _tokenClient = window.google.accounts.oauth2.initTokenClient({
     client_id: CONFIG.OAUTH_CLIENT_ID,
-    redirect_uri: CONFIG.REDIRECT_URI,
-    response_type: 'code',
     scope: SCOPES,
-    code_challenge: challenge,
-    code_challenge_method: 'S256',
-    access_type: 'offline',
-    prompt: 'consent',
+    callback(response) {
+      if (!_resolveAuth) return;
+      if (response.error) {
+        _resolveAuth({ ok: false, error: response.error });
+      } else {
+        localStorage.setItem(TOKEN_KEY, JSON.stringify({
+          access_token: response.access_token,
+          expires_at: Date.now() + (response.expires_in * 1000),
+        }));
+        _resolveAuth({ ok: true });
+      }
+      _resolveAuth = null;
+    },
   });
-
-  window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+  return _tokenClient;
 }
 
-export async function handleOAuthCallback() {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-  const error = params.get('error');
-  if (error || !code) return false;
-
-  const verifier = sessionStorage.getItem('ls_pkce_verifier');
-  if (!verifier) return false;
-
-  try {
-    const res = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        client_id: CONFIG.OAUTH_CLIENT_ID,
-        redirect_uri: CONFIG.REDIRECT_URI,
-        grant_type: 'authorization_code',
-        code,
-        code_verifier: verifier,
-      }),
-    });
-
-    if (!res.ok) return false;
-
-    const data = await res.json();
-    localStorage.setItem(
-      TOKEN_KEY,
-      JSON.stringify({
-        access_token: data.access_token,
-        expires_at: Date.now() + data.expires_in * 1000,
-      })
-    );
-  } catch {
-    return false;
-  } finally {
-    sessionStorage.removeItem('ls_pkce_verifier');
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-
-  return true;
+export function startOAuthFlow() {
+  return new Promise(resolve => {
+    _resolveAuth = resolve;
+    initTokenClient().requestAccessToken();
+  });
 }
+
+// ── Token management ───────────────────────────────────────────────────────────
 
 export function getToken() {
   try {
@@ -107,6 +60,10 @@ export function isConnected() {
 }
 
 export function disconnect() {
+  const token = getToken();
+  if (token && window.google?.accounts?.oauth2) {
+    window.google.accounts.oauth2.revoke(token, () => {});
+  }
   localStorage.removeItem(TOKEN_KEY);
 }
 
