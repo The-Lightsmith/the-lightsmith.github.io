@@ -1,7 +1,7 @@
 # The Lightsmith – Claude Code Instructions
 
 ## Project overview
-Static marketing website for The Lightsmith, a mobile headlight restoration business based in Caldwell, ID serving the Treasure Valley. Deployed via GitHub Pages at `https://lightsmith.llc/`.
+Static marketing website for The Lightsmith, a mobile headlight restoration business based in Cedar City, UT serving Southern Utah. Deployed via GitHub Pages at `https://lightsmith.llc/`.
 
 ## Stack
 - Plain HTML, CSS, and vanilla JavaScript — no build tools, no frameworks, no npm
